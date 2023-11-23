@@ -8,6 +8,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 
+
 <!-- 폰트어썸 불러오기 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 
@@ -31,12 +32,14 @@
     font-weight: normal;
     font-style: normal;
 }
+
 @font-face {
   font-family: 'NPSfontBold';
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/NPSfontBold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
 }
+
 
 html{
   font-family: 'Noto Sans KR', sans-serif;
@@ -221,6 +224,7 @@ body{
   
 }
 
+<<<<<<< HEAD
 #phone1, #phone2, #phone3{
   border: none;
 }
@@ -307,11 +311,83 @@ body{
 
 .btn_btn-modify {
   background-color:	#778899 !important;
+=======
+
+
+
+/* 버튼 시작 */
+.btn {
+  height: 35px;
+  font-size: 0.9rem;
+  line-height: 1rem;
+  text-shadow: 1px 1px 20px white;
+  padding:0 15px;
+  color: white;
+  background-color: #444;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  outline: none;
+  }
+
+.btn:hover {
+  background-color:	#222;
+  box-shadow:3px 3px 3px gray;
+  color: #FFF;
+  font-weight:bold;
+}
+
+.m-btn {
+  height:25px;
+  width:65px;
+  font-size: 0.9rem;
+  line-height: 1rem;
+  text-shadow: 1px 1px 20px white;
+  padding:0 15px;
+  color: white;
+  background-color: #444;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  outline: none;
+  }
+.m-btn:hover {
+  background-color:	#222;
+  box-shadow:3px 3px 3px gray;
+  color: #FFF;
+  font-weight:bold;
+}
+
+
+.btn-go {
+  background-color: #008B8B;
+}
+
+.btn-check {
+  background-color: #3c3c3c;
+}
+
+.btn-danger {
+  background-color: #800000;
+}
+
+.btn-back {
+  background-color:	#696969;
+}
+
+.btn-modify {
+  background-color:	#778899;
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
 }
 /* 버튼 끝 */
 
 /* 탑 헤더 시작 */
 .head-bar-section{
+<<<<<<< HEAD
   width:100% !important;
 	position:fixed !important;
 	z-index:300 !important;
@@ -322,10 +398,23 @@ body{
 
 .head-bar > *{
   display:flex !important;
+=======
+  width:100%;
+	position:fixed;
+	z-index:300;
+  color:black;
+  background-color:white;
+  height:40px;
+}
+
+.head-bar > *{
+  display:flex;
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
 
 }
 
 .head-bar-button{
+<<<<<<< HEAD
   display:block !important;
   text-align:center !important;
   border:2.5px solid white !important;
@@ -357,6 +446,39 @@ body{
 .head-bar-button:hover::after{
   transform: scaleX(0.5) !important; 
   z-index:30 !important;
+=======
+  display:block;
+  text-align:center;
+  border:2.5px solid white;
+  margin-top:10px;
+  font-size:0.9rem;
+  width:70px;
+}
+.head-bar-button:first-child{
+  width:40px;
+}
+
+.head-bar-button:last-child{
+  margin-right:15px;
+}
+
+.head-bar-button::after{
+  display:block;
+  content: '';
+  border-bottom: solid 2.5px #777; 
+  transform: scaleX(0);  
+  transition: transform 250ms ease-in-out;
+  z-index:30;
+}
+
+.head-bar-button:hover{
+  font-weight:bold;
+}
+
+.head-bar-button:hover::after{
+  transform: scaleX(0.5); 
+  z-index:30;
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
 }
 
 
@@ -364,6 +486,7 @@ body{
 
 /* 탑바 시작 */
 :root {
+<<<<<<< HEAD
   --top-bar__height:78px !important;
 }
 
@@ -379,6 +502,23 @@ body{
   height:var(--top-bar__height) !important;
   border-bottom:3px solid gray !important;
   box-shadow:5px 5px 5px rgba(220, 220, 220, 0.7) !important;
+=======
+  --top-bar__height:78px;
+}
+
+.top-bar-padding{
+  height:var(--top-bar__height);
+}
+
+.top-bar{
+  position:fixed;
+  width:100%;
+  background-color:white;
+  z-index:200;
+  height:var(--top-bar__height);
+  border-bottom:3px solid gray;
+  box-shadow:5px 5px 5px rgba(220, 220, 220, 0.7);
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
 }
 
 
@@ -496,8 +636,13 @@ body{
 
 /* 모바일 탑바 시작 */
 :root {
+<<<<<<< HEAD
   --mobile-top-bar__btn_btn-toggle-side-bar__dur:.3s !important;
   --mobile-top-bar__height:37px !important;
+=======
+  --mobile-top-bar__btn-toggle-side-bar__dur:.3s;
+  --mobile-top-bar__height:37px;
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
 }
 
 .mobile-top-bar-padding{
@@ -529,6 +674,7 @@ body{
   z-index:5000;
 }
 
+<<<<<<< HEAD
 .mobile-top-bar_btn_btn-toggle-side-bar {
   width:20px !important;
   height:20px !important;
@@ -540,12 +686,26 @@ body{
   
 }
 .mobile-top-bar_btn_btn-toggle-side-bar > div {
+=======
+.mobile-top-bar_btn-toggle-side-bar {
+  width:20px;
+  height:20px;
+  position:fixed;
+  right:0;
+  margin-right:10px;
+  z-index:1000;
+  cursor:pointer;
+  
+}
+.mobile-top-bar_btn-toggle-side-bar > div {
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
   position:absolute;
   top:0;
   right:0;
   width:100%;
   height:20%;
   background-color:black;
+<<<<<<< HEAD
   transition: top var(--mobile-top-bar__btn_btn-toggle-side-bar__dur), transform var(--mobile-top-bar__btn_btn-toggle-side-bar__dur), opacity var(--mobile-top-bar__btn_btn-toggle-side-bar__dur);
   border-radius:2px;
 }
@@ -560,15 +720,39 @@ body{
 
 .mobile-top-bar_btn_btn-toggle-side-bar.active > div:nth-child(1),
 .mobile-top-bar_btn_btn-toggle-side-bar.active > div:nth-child(3) {
+=======
+  transition: top var(--mobile-top-bar__btn-toggle-side-bar__dur), transform var(--mobile-top-bar__btn-toggle-side-bar__dur), opacity var(--mobile-top-bar__btn-toggle-side-bar__dur);
+  border-radius:2px;
+}
+
+.mobile-top-bar_btn-toggle-side-bar > div:nth-child(2) {
+  top:40%;
+}
+
+.mobile-top-bar_btn-toggle-side-bar > div:nth-child(3) {
+  top:80%;
+}
+
+.mobile-top-bar_btn-toggle-side-bar.active > div:nth-child(1),
+.mobile-top-bar_btn-toggle-side-bar.active > div:nth-child(3) {
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
   top:40%;
   transform:rotate(-45deg);
 }
 
+<<<<<<< HEAD
 .mobile-top-bar_btn_btn-toggle-side-bar.active > div:nth-child(3) {
   transform:rotate(45deg);
 }
 
 .mobile-top-bar_btn_btn-toggle-side-bar.active > div:nth-child(2) {
+=======
+.mobile-top-bar_btn-toggle-side-bar.active > div:nth-child(3) {
+  transform:rotate(45deg);
+}
+
+.mobile-top-bar_btn-toggle-side-bar.active > div:nth-child(2) {
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
   opacity:0;
 }
 /* 모바일 탑바 끝 */
@@ -959,11 +1143,19 @@ body{
   width:95%;
   min-width:150px;
 }
+<<<<<<< HEAD
 .join_cell__body > .btn_btn-check {
   margin-top:5px !important;
   margin-left:7px !important;
   width:95% !important;
   font-size:0.8rem !important;
+=======
+.join_cell__body > .btn-check {
+  margin-top:5px;
+  margin-left:7px;
+  width:95%;
+  font-size:0.8rem;
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
 }
 
 .joinInput-cell{
@@ -1028,10 +1220,17 @@ body{
   width:95%;
   min-width:150px;
 }
+<<<<<<< HEAD
 .mobile-join_cell__body > .btn_btn-check {
   margin-top:5px !important;
   margin-left:7px !important;
   width:95% !important;
+=======
+.mobile-join_cell__body > .btn-check {
+  margin-top:5px;
+  margin-left:7px;
+  width:95%;
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
 }
 
 .mobile-joinInput-cell > *{
@@ -1116,10 +1315,17 @@ body{
   align-items:center;
 }
 
+<<<<<<< HEAD
 .MyPage_cell__body > .btn_btn{
   margin-left:5px !important;
   font-size:0.7rem !important;
   width:90px !important;
+=======
+.MyPage_cell__body > .btn{
+  margin-left:5px;
+  font-size:0.7rem;
+  width:90px;
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
 }
 
 .section-MyPage-body__option button{
@@ -1183,8 +1389,13 @@ body{
 
 }
 
+<<<<<<< HEAD
 .mobile-MyPage_cell__title > .btn_btn{
   margin-left:5px !important;
+=======
+.mobile-MyPage_cell__title > .btn{
+  margin-left:5px;
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
   
   width:155px;
 }
@@ -1666,14 +1877,22 @@ body{
 
 }
 
+<<<<<<< HEAD
 .article-page-menu > ul > li:not(.before-btn_btn):not(.after-btn_btn):hover > a {
+=======
+.article-page-menu > ul > li:not(.before-btn):not(.after-btn):hover > a {
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
 
   border:2px solid gray;
   border-radius:10px;
 }
 
 
+<<<<<<< HEAD
 .article-page-menu > ul > li:not(.before-btn_btn):not(.after-btn_btn) > a {
+=======
+.article-page-menu > ul > li:not(.before-btn):not(.after-btn) > a {
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
 
   min-width:30px;
   
@@ -1881,7 +2100,11 @@ body{
   background-color:white;
 
 }
+<<<<<<< HEAD
 .mobile-article-list__cell-search > form .m-btn_btn{  
+=======
+.mobile-article-list__cell-search > form .m-btn{  
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
   height:29px;
   border-radius:0px;
   width:70px;
@@ -1890,7 +2113,11 @@ body{
 
 }
 
+<<<<<<< HEAD
 .mobile-section-article-list .m-btn_btn{
+=======
+.mobile-section-article-list .m-btn{
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
   border-radius:0;
   height:35px;
   width:100%;
@@ -1917,10 +2144,17 @@ body{
   justify-content:center;
 }
 
+<<<<<<< HEAD
 .mobile-article-page-menu > ul > .after-btn_btn {
   margin-top:0px;
 }
 .mobile-article-page-menu > ul > .before-btn_btn {
+=======
+.mobile-article-page-menu > ul > .after-btn {
+  margin-top:0px;
+}
+.mobile-article-page-menu > ul > .before-btn {
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
   margin-top:0px;
 }
 
@@ -1931,7 +2165,11 @@ body{
 }
 
 
+<<<<<<< HEAD
 .mobile-article-page-menu > ul > li:not(.before-btn_btn):not(.after-btn_btn):hover > a {
+=======
+.mobile-article-page-menu > ul > li:not(.before-btn):not(.after-btn):hover > a {
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
   font-weight:bold;
   border:2px solid gray;
   border-radius:10px;
@@ -2072,10 +2310,17 @@ body{
   font-size:1rem;
   border-radius:10px;
 }
+<<<<<<< HEAD
 .search-list__cell-search > form >.btn_btn {
   font-size:1rem !important;
   height:100% !important;
   width:100px !important;
+=======
+.search-list__cell-search > form >.btn {
+  font-size:1rem;
+  height:100%;
+  width:100px;
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
   
 }
 
@@ -2264,7 +2509,11 @@ body{
   background-color:white;
 
 }
+<<<<<<< HEAD
 .mobile-search-list__cell-search > form .m-btn_btn{  
+=======
+.mobile-search-list__cell-search > form .m-btn{  
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
   height:29px;
   border-radius:0px;
   width:70px;
@@ -2483,8 +2732,13 @@ body{
   margin-bottom:10px;
 }
 
+<<<<<<< HEAD
 .article-detail-cell__option .btn_btn{
   margin-left:5px !important;
+=======
+.article-detail-cell__option .btn{
+  margin-left:5px;
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
 }
 
 /* 게시물 상세페이지 끝 */
@@ -2586,10 +2840,17 @@ body{
 
 }
 
+<<<<<<< HEAD
 .reply-list-box-cell__option-btn_btns{
   height:50%;
 }
 .reply-list-box-cell__option-btn_btns > button{
+=======
+.reply-list-box-cell__option-btns{
+  height:50%;
+}
+.reply-list-box-cell__option-btns > button{
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
   margin-left:5px;
 }
 
@@ -2624,7 +2885,11 @@ body{
 .reply-list-box-cell__option button:last-child.active{
   display:none;
 }
+<<<<<<< HEAD
 .reply-list-box-cell__option-btn_btns.active{
+=======
+.reply-list-box-cell__option-btns.active{
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
   display:none;
 }
 .reply-detail-cell-likesCount.active{
@@ -2726,10 +2991,17 @@ body{
 
 }
 
+<<<<<<< HEAD
 .reReply-list-box-cell__option-btn_btns{
   height:50%;
 }
 .reReply-list-box-cell__option-btn_btns > button{
+=======
+.reReply-list-box-cell__option-btns{
+  height:50%;
+}
+.reReply-list-box-cell__option-btns > button{
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
   margin-left:5px;
 }
 
@@ -2766,7 +3038,11 @@ body{
 .reReply-list-box-cell__option button:last-child.active{
   display:none;
 }
+<<<<<<< HEAD
 .reReply-list-box-cell__option-btn_btns.active{
+=======
+.reReply-list-box-cell__option-btns.active{
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
   display:none;
 }
 .reReply-detail-cell-likesCount.active{
@@ -2802,7 +3078,11 @@ body{
 
 }
 
+<<<<<<< HEAD
 .reply-page-menu > ul > .before-btn_btn, .reply-page-menu > ul > .after-btn_btn {
+=======
+.reply-page-menu > ul > .before-btn, .reply-page-menu > ul > .after-btn {
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
   margin-top:-3px;
   padding-top:3px;
 }
@@ -2812,13 +3092,21 @@ body{
 }
 
 
+<<<<<<< HEAD
 .reply-page-menu > ul > li:not(.before-btn_btn):not(.after-btn_btn):hover > a {
+=======
+.reply-page-menu > ul > li:not(.before-btn):not(.after-btn):hover > a {
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
   border:2px solid gray;
   border-radius:10px;
 }
 
 
+<<<<<<< HEAD
 .reply-page-menu > ul > li:not(.before-btn_btn):not(.after-btn_btn) > a {
+=======
+.reply-page-menu > ul > li:not(.before-btn):not(.after-btn) > a {
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
   min-width:30px;
   justify-content:center;
 }
@@ -2996,7 +3284,11 @@ body{
   width:90%;
 }
 
+<<<<<<< HEAD
 .mobile-reply-write-box-form__option > .m-btn_btn{
+=======
+.mobile-reply-write-box-form__option > .m-btn{
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
   height:31px;
   width:76px;
   margin:0 5px;
@@ -3077,11 +3369,19 @@ body{
   margin-top:5px;
 }
 
+<<<<<<< HEAD
 .mobile-reply-list-box-cell__option-btn_btns{
   height:100%;
   
 }
 .mobile-reply-list-box-cell__option-btn_btns > button{
+=======
+.mobile-reply-list-box-cell__option-btns{
+  height:100%;
+  
+}
+.mobile-reply-list-box-cell__option-btns > button{
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
   margin-right:5px;
   height:30px;
   padding:0px 10px;
@@ -3120,7 +3420,11 @@ body{
 .mobile-reply-list-box-cell__option button:last-child.active{
   display:none;
 }
+<<<<<<< HEAD
 .mobile-reply-list-box-cell__option-btn_btns.active{
+=======
+.mobile-reply-list-box-cell__option-btns.active{
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
   display:none;
 }
 .mobile-reply-list-box__cell-body.active{
@@ -3155,7 +3459,11 @@ body{
   width:90%;
 }
 
+<<<<<<< HEAD
 .mobile-reReply-write-box-form__option > .m-btn_btn{
+=======
+.mobile-reReply-write-box-form__option > .m-btn{
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
   height:31px;
   width:76px;
   margin:0 5px;
@@ -3243,11 +3551,19 @@ body{
   margin-top:5px;
 }
 
+<<<<<<< HEAD
 .mobile-reReply-list-box-cell__option-btn_btns{
   height:100%;
   
 }
 .mobile-reReply-list-box-cell__option-btn_btns > button{
+=======
+.mobile-reReply-list-box-cell__option-btns{
+  height:100%;
+  
+}
+.mobile-reReply-list-box-cell__option-btns > button{
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
   margin-right:5px;
   height:30px;
   padding:0px 10px;
@@ -3288,7 +3604,11 @@ body{
 .mobile-reReply-list-box-cell__option button:last-child.active{
   display:none;
 }
+<<<<<<< HEAD
 .mobile-reReply-list-box-cell__option-btn_btns.active{
+=======
+.mobile-reReply-list-box-cell__option-btns.active{
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
   display:none;
 }
 .mobile-reReply-list-box__cell-body.active{
@@ -3327,7 +3647,11 @@ body{
 
 }
 
+<<<<<<< HEAD
 .mobile-reply-page-menu > ul > .before-btn_btn, .mobile-reply-page-menu > ul > .after-btn_btn {
+=======
+.mobile-reply-page-menu > ul > .before-btn, .mobile-reply-page-menu > ul > .after-btn {
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
   margin-top:-3px;
   padding-top:3px;
 }
@@ -3337,13 +3661,21 @@ body{
 }
 
 
+<<<<<<< HEAD
 .mobile-reply-page-menu > ul > li:not(.before-btn_btn):not(.after-btn_btn):hover > a {
+=======
+.mobile-reply-page-menu > ul > li:not(.before-btn):not(.after-btn):hover > a {
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
   border:2px solid gray;
   border-radius:10px;
 }
 
 
+<<<<<<< HEAD
 .mobile-reply-page-menu > ul > li:not(.before-btn_btn):not(.after-btn_btn) > a {
+=======
+.mobile-reply-page-menu > ul > li:not(.before-btn):not(.after-btn) > a {
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
   min-width:20px;
   justify-content:center;
 }
@@ -3425,8 +3757,13 @@ body{
   margin-top:10px;
 }
 
+<<<<<<< HEAD
 .article-writeAndModify-cell__option .btn_btn{
   margin-left:5px !important;
+=======
+.article-writeAndModify-cell__option .btn{
+  margin-left:5px;
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
 }
 
 /* 게시물 글쓰기(수정)페이지 시작 */
@@ -3534,6 +3871,7 @@ body{
   text-align:center;
 }
 
+<<<<<<< HEAD
 .font_NPS{
   font-family: NPSfontBold;
   font-size: 22px;
@@ -3642,6 +3980,11 @@ body{
   }
 </script>
 
+=======
+
+
+</style>
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
 
 </head>
 
@@ -3687,12 +4030,20 @@ body{
 
 
             <li title="NOTICE">
+<<<<<<< HEAD
                 <a href="/" class="block" >
+=======
+                <a href="../article/list?boardId=1" class="block">
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
                   <span>Home</span>
                 </a>
               </li>
             <li title="NOTICE">
+<<<<<<< HEAD
               <a href="/user/logout" class="block">
+=======
+              <a href="../article/list?boardId=1" class="block">
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
                 <span>Logout</span>
               </a>
             </li>
@@ -3730,18 +4081,26 @@ body{
               <ul>
                 -->
                 <li title="T-STORY">
+<<<<<<< HEAD
 <!--
                   <a href="/user/mypage" target="_blank" class="block">
 -->
                   <a href="/user/mypage" class="block">
+=======
+                  <a href="https://cjy324.tistory.com/" target="_blank" class="block">
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
                     <span>회원정보</span>
                   </a>
                 </li>
                 <li title="GITHUB">
+<<<<<<< HEAD
 <!--
                   <a href="/user/leave" target="_blank" class="block">
 -->
                   <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#DeleteMember" class="block">
+=======
+                  <a href="https://github.com/cjy324/TIL_Jooyoung#til_jooyoung" target="_blank" class="block">
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
                     <span>회원탈퇴</span>
                   </a>
                 </li>
@@ -3759,7 +4118,11 @@ body{
 
   <!-- 모바일 탑바 시작 -->
   <section class="mobile-top-bar-padding flex flex-ai-c visible-sm-down">
+<<<<<<< HEAD
     <div class="mobile-top-bar_btn_btn-toggle-side-bar flex-as-c visible-sm-down">
+=======
+    <div class="mobile-top-bar_btn-toggle-side-bar flex-as-c visible-sm-down">
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
       <div></div>
       <div></div>
       <div></div>
@@ -3782,6 +4145,7 @@ body{
     <span>MENU</span>
     <nav class="mobile-side-bar_menu flex flex-jc-c">
       <ul class="">
+<<<<<<< HEAD
         <li title="Home">
           <a href="/" class="block">
             <span>Home</span>
@@ -3808,10 +4172,31 @@ body{
               <a href="../article/list?boardId=3" class="block">
     -->
                 <span>Leave</span>
+=======
+        <li title="NOTICE">
+          <a href="../article/list?boardId=1" class="block">
+            <span>NOTICE</span>
+          </a>
+        </li>
+        <li>
+          <a class="block">
+            <span>BOARD</span>
+          </a>
+          <ul class="hide">
+            <li title="NEWS">
+              <a href="../article/list?boardId=2" class="block">
+                <span>NEWS</span>
+              </a>
+            </li>
+            <li title="FREE">
+              <a href="../article/list?boardId=3" class="block">
+                <span>FREE</span>
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
               </a>
             </li>
           </ul>
         </li>
+<<<<<<< HEAD
         <li title="Log out">
           <a href="/user/logout" class="block">
             <span>LOG OUT</span>
@@ -3819,12 +4204,17 @@ body{
         </li>
         <li>
 <!--
+=======
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
         <li title="SEARCH">
           <a href="search.html" class="block">
             <span>SEARCH</span>
           </a>
         </li>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
         <li>
           <a class="block">
             <span>LINK</span>
@@ -3842,14 +4232,23 @@ body{
             </li>
           </ul>
         </li>
+<<<<<<< HEAD
 -->
+=======
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
       </ul>
     </nav>
     <div class="mobile-side-bar_menu flex flex-jc-c">
       <c:if test="${isLogined}">
+<<<<<<< HEAD
         <div class="mobile-side-bar-button"><a href="/"><i class="fas fa-home"></i> 홈</a></div>
         <div class="mobile-side-bar-button"><a href="/user/mypage"><i class="fas fa-user-cog"></i> 회원정보</a></div>
         <div class="mobile-side-bar-button"><a href="/user/logout"><i class="fas fa-sign-out-alt"></i> 로그아웃</a></div>
+=======
+        <div class="mobile-side-bar-button"><a href="../home/main"><i class="fas fa-home"></i> 홈</a></div>
+        <div class="mobile-side-bar-button"><a href="../member/showMyPage"><i class="fas fa-user-cog"></i> 회원정보</a></div>
+        <div class="mobile-side-bar-button"><a href="../member/doLogout"><i class="fas fa-sign-out-alt"></i> 로그아웃</a></div>
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
       </c:if>
     </div>
   </aside>
@@ -3860,11 +4259,18 @@ body{
     <section class="main-box-section con">
       <!-- 회원정보 페이지 시작 -->
       <div class="section-MyPage min-height-50vh flex flex-jc-c flex-ai-c ">
+<<<<<<< HEAD
         <form name="User" onsubmit="submitForm()" action="/user/update" method="POST">
 <!--
           <input type="hidden" name="id" value="${loginedMember.id}">
           <input type="hidden" name="loginPwReal">
 -->
+=======
+        <form name="form" onsubmit="check(this); return false;" action="doModifyInfo" method="POST">
+          <input type="hidden" name="id" value="${loginedMember.id}">
+          <input type="hidden" name="loginPwReal">
+
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
           <div class="section-MyPage-body flex flex-jc-c flex-ai-c">
             <div>MY PAGE</div>
             <div class="section-MyPage-body__cell">
@@ -3872,9 +4278,16 @@ body{
               <div class="MyPage_cell__title">
                 <span>회원이름</span>
                 <div class="MyPage_cell__body">
+<<<<<<< HEAD
                   <spans class="font_NPS">{{user_Name}}</span>
                     <input type="hidden" name="user_Name" id ="name" value ="{{user_Name}}">
 
+=======
+                  <input type="text" name="user_Name" id ="name" value ="{{user_Name}}" required>
+<!--
+                  <span></span>
+  -->
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
         
                 </div>
               </div>
@@ -3882,36 +4295,52 @@ body{
               <div class="MyPage_cell__title">
                 <span>회원ID</span>
                 <div class="MyPage_cell__body">
+<<<<<<< HEAD
                   <spans class="font_NPS">{{user_Id}}</span>
                     <input type="hidden" name="user_Id" id ="id" value ="{{user_Id}}">
 <!--
                   <span>${loginedMember.loginId}</span>
     -->
+=======
+                  <span>${loginedMember.loginId}</span>
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
                 </div>
               </div>
 
               <div class=MyPage_cell__title>
                 <span>Password</span>
                 <div class=MyPage_cell__body>
+<<<<<<< HEAD
                   <input type="password" name="user_Pwd" id="password1" minlength="4" maxlength="50" placeholder="Password 입력" required>
+=======
+                  <input type="password" name="loginPw" maxlength="50" placeholder="PW 입력">
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
                 </div>
               </div>
 
               <div class=MyPage_cell__title>
                 <span>Password Check</span>
                 <div class=MyPage_cell__body>
+<<<<<<< HEAD
                   <input type="password" name="loginPwConfirm" id="password2" minlength="4" maxlength="50" placeholder="Password 확인" required>
+=======
+                  <input type="password" name="loginPwConfirm" maxlength="50" placeholder="PW 확인">
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
                 </div>
               </div>
 
               <div class="MyPage_cell__title">
                 <span>성별</span>
                 <div class=MyPage_cell__body>
+<<<<<<< HEAD
                   <spans class="font_NPS" style="font-size: 32px;">{{user_Gender}}</span>
                     <input type="hidden" name="user_Gender" id ="gender" value ="{{user_Gender}}">
 <!--
                   <input type="text" name="name" value="${loginedMember.name}">
     -->
+=======
+                  <input type="text" name="name" value="${loginedMember.name}">
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
                 </div>
               </div>
             </div>
@@ -3919,6 +4348,7 @@ body{
             <div class="section-MyPage-body__cell">
               <div class="MyPage_cell__title">
                 <span>연락처</span>
+<<<<<<< HEAD
                 <button style="margin-left: 5px; width: 110px;" class="btn_btn btn_btn-check" name="dupNickCheck" onclick="checkDupNick(this);" type="button"><i class="far fa-check-circle"></i>번호 인증</button>
 <!--
                 <div class="MyPage_cell__body">
@@ -3943,12 +4373,24 @@ body{
 <!--
                   <input type="email" name="email" value="${loginedMember.email}">
 -->                  
+=======
+                <div class="MyPage_cell__body">
+                  <input type="text" name="nickname" placeholder="${loginedMember.nickname}">
+                  <button class="btn btn-check" name="dupNickCheck" onclick="checkDupNick(this);" type="button"><i class="far fa-check-circle"></i> 중복체크</button>
+                </div>
+              </div>
+              <div class=MyPage_cell__title>
+                <span>질병</span>
+                <div class=MyPage_cell__body>
+                  <input type="email" name="email" value="${loginedMember.email}">
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
                 </div>
               </div>
 
               <div class=MyPage_cell__title>
                 <span>출생일</span>
                 <div class=MyPage_cell__body>
+<<<<<<< HEAD
                   <span class="font_NPS" style="font-size: 20px;">
                     {% set uDate = user_Date.split()[:4] %}
                     {{ ' '.join(uDate) }}
@@ -3958,11 +4400,15 @@ body{
                   <!--                  
                   <input type="number" name="cellphoneNo" value="${loginedMember.cellphoneNo}">
   -->  
+=======
+                  <input type="number" name="cellphoneNo" value="${loginedMember.cellphoneNo}">
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
                 </div>
               </div>
 
               <div class=MyPage_cell__title>
                 <span>주소</span>
+<<<<<<< HEAD
                 <button style="margin-left: 15px;" class="btn_btn btn_btn-check" name="dupNickCheck" onclick="execDaumPostcode();" type="button"><i class="far fa-check-circle"></i> 찾기</button>                
                 <div class="MyPage_cell__body">
                   <input type="hidden" name="user_PostNumber" id="postcode"  value="{{user_PostNumber}}" >
@@ -3973,18 +4419,32 @@ body{
                   -->
                     
                   
+=======
+                <button style="margin-left: 15px;" class="btn btn-check" name="dupNickCheck" onclick="execDaumPostcode();" type="button"><i class="far fa-check-circle"></i> 찾기</button>                
+                <div class=MyPage_cell__body>
+                  <input type="hidden" name="user_PostNumber" id="postcode"  value="${loginedMember.name}">
+                  <input type="text"   name="user_Address"    id="address"   value="${loginedMember.name}">
+                  <div>
+                    <input type="text"   name="user_Details"    id="extraAddr" value="${loginedMember.name}">
+                  </div>
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
 <!-- 
                   <span>${loginedMember.authLevel}</span>
   -->
                 </div>
               </div>
+<<<<<<< HEAD
 <!--
+=======
+
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
               <div class=MyPage_cell__title>
                 <span>회원가입일</span>
                 <div class=MyPage_cell__body>
                   <span>${loginedMember.regDate}</span>
                 </div>
               </div>
+<<<<<<< HEAD
 -->
               <div class="section-MyPage-body__option flex flex-jc-fe flex-ai-fe">
 
@@ -3996,6 +4456,11 @@ body{
                 <button class="submitModifybtn_btn btn_btn btn_btn-go" type="submit" onclick="if(confirm('정말 변경하시겠습니까?') == false) {return false;}"><i class="far fa-edit"></i> 변경</button>
 -->
                 <button class="cleModifybtn_btn btn_btn btn_btn-back" type="button" onclick="history.back();"><i class="fas fa-undo"></i> 취소</button>
+=======
+              <div class="section-MyPage-body__option flex flex-jc-fe flex-ai-fe">
+                <button class="submitModifyBtn btn btn-go" type="submit" onclick="if(confirm('정말 변경하시겠습니까?') == false) {return false;}"><i class="far fa-edit"></i> 변경</button>
+                <button class="cleModifyBtn btn btn-back" type="button" onclick="history.back();"><i class="fas fa-undo"></i> 취소</button>
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
               </div>
             </div>
           </div>
@@ -4011,22 +4476,33 @@ body{
     <section class="main-box-section con">
       <!-- 모바일-회원정보 페이지 시작 -->
       <div class="mobile-section-MyPage min-height-50vh flex flex-jc-c flex-ai-c ">
+<<<<<<< HEAD
         <form name="User" onsubmit="submitForm()" action="/user/update" method="POST">
 <!--
           <input type="hidden" name="id" value="${loginedMember.id}">
           <input type="hidden" name="loginPwReal">
 -->
+=======
+        <form name="form" onsubmit="check(this); return false;" action="doModifyInfo" method="POST">
+          <input type="hidden" name="id" value="${loginedMember.id}">
+          <input type="hidden" name="loginPwReal">
+
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
           <div class="mobile-section-MyPage-body flex flex-jc-c flex-column">
             <div>
               MY PAGE
             </div>
+<<<<<<< HEAD
 <!--
+=======
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
             <div class="mobile-MyPage_cell__title">
               <span>회원번호</span>
               <div class="mobile-MyPage_cell__body">
                 <span>5</span>
               </div>
             </div>
+<<<<<<< HEAD
 -->
             <div class="mobile-MyPage_cell__title">
               <span>회원이름</span>
@@ -4035,33 +4511,57 @@ body{
                   <input type="hidden" name="user_Name" id ="name" value ="{{user_Name}}">
               </div>
             </div>
+=======
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
 
             <div class="mobile-MyPage_cell__title">
               <span>회원ID</span>
               <div class="mobile-MyPage_cell__body">
+<<<<<<< HEAD
                 <spans class="font_NPS">{{user_Id}}</span>
                   <input type="hidden" name="user_Id" id ="id" value ="{{user_Id}}">
 
+=======
+                <span>${loginedMember.loginId}</span>
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
               </div>
             </div>
 
             <div class="mobile-MyPage_cell__title">
               <span>Password</span>
               <div class="mobile-MyPage_cell__body">
+<<<<<<< HEAD
                 <input type="password" style="width: 70px;" name="password1" maxlength="20" placeholder="PW 입력">
                 <input type="password" style="width: 70px; margin-left: 10px;" name="loginPwConfirm" maxlength="20" placeholder="PW 확인">
+=======
+                <input type="password" name="loginPw" maxlength="50" placeholder="PW 입력">
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
               </div>
             </div>
 
             <div class="mobile-MyPage_cell__title">
+<<<<<<< HEAD
               <span>성별</span>
               <div class="mobile-MyPage_cell__body">
                 <spans class="font_NPS" style="font-size: 24px;">{{user_Gender}}</span>
                   <input type="hidden" name="user_Gender" id ="gender" value ="{{user_Gender}}">
+=======
+              <span>Password Check</span>
+              <div class="mobile-MyPage_cell__body">
+                <input type="password" name="loginPwConfirm" maxlength="50" placeholder="PW 확인">
+              </div>
+            </div>
+
+            <div class="mobile-MyPage_cell__title">
+              <span>회원이름</span>
+              <div class="mobile-MyPage_cell__body">
+                <input type="text" name="name" value="${loginedMember.name}">
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
               </div>
             </div>   
             
             <div class="mobile-MyPage_cell__title">
+<<<<<<< HEAD
               <span>연락처</span>
               <button style="margin-left:15px; width:110px;" class="btn_btn btn_btn-check" name="dupNickCheck" onclick="checkDupNick(this);" type="button"><i class="far fa-check-circle"></i> 번호 인증</button>          
           <div class="MyPage_cell__body" style="width: 260px; margin-top: 15px; margin-left: auto; margin-right: auto;">
@@ -4079,12 +4579,21 @@ body{
 
 
             <!--
+=======
+              <span>닉네임</span>
+              <div class="mobile-MyPage_cell__body">
+                <input type="text" name="nickname" placeholder="${loginedMember.nickname}">
+              </div>
+              <button class="btn btn-check" name="dupNickCheck" onclick="checkDupNick(this);" type="button"><i class="far fa-check-circle"></i> 중복체크</button>
+            </div>
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
             <div class="mobile-MyPage_cell__title">
               <span>e-mail</span>
               <div class="mobile-MyPage_cell__body">
                 <input type="email" name="email" value="${loginedMember.email}">
               </div>
             </div>
+<<<<<<< HEAD
 -->
             <div class="mobile-MyPage_cell__title">
               <span>질병</span>
@@ -4095,10 +4604,18 @@ body{
                 <spans class="font_NPS">{{user_Disability}}</span>
                 <input type="hidden" name="user_Disability" id ="disability" value ="{{user_Disability}}">
 
+=======
+
+            <div class="mobile-MyPage_cell__title">
+              <span>연락처</span>
+              <div class="mobile-MyPage_cell__body">
+                <input type="number" name="cellphoneNo" value="${loginedMember.cellphoneNo}">
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
               </div>
             </div>
 
             <div class="mobile-MyPage_cell__title">
+<<<<<<< HEAD
               <span>출생일</span>
               <div class="mobile-MyPage_cell__body">
                 <span class="font_NPS" style="font-size: 20px;">
@@ -4136,6 +4653,26 @@ body{
 -->
               <button class="cleModifybtn_btn btn_btn btn_btn-back" type="button" onclick="history.back();"><i class="fas fa-undo"></i> 취소</button>
             </div>
+=======
+              <span>회원등급</span>
+              <div class="mobile-MyPage_cell__body">
+                <span>${loginedMember.authLevel}</span>
+              </div>
+            </div>
+
+            <div class="mobile-MyPage_cell__title">
+              <span>회원가입일</span>
+              <div class="mobile-MyPage_cell__body">
+                <span>${loginedMember.regDate}</span>
+              </div>
+            </div>
+
+            <div class="mobile-section-MyPage-body__option flex flex-column">
+              <button class="submitModifyBtn btn btn-go" type="submit" onclick="if(confirm('정말 변경하시겠습니까?') == false) {return false;}"><i class="far fa-edit"></i> 변경</button>
+              <button class="cleModifyBtn btn btn-back" type="button" onclick="history.back();"><i class="fas fa-undo"></i> 취소</button>
+            </div>
+
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
           </div>
         </form>
       </div>
@@ -4144,6 +4681,7 @@ body{
   </main>
   <!-- 모바일-메인 컨텐츠 박스 끝 -->
 
+<<<<<<< HEAD
     <!-- Modal -->
     <div class="modal fade" id="UpdateMember" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
@@ -4184,6 +4722,10 @@ body{
 
   <!-- 맨 위 버튼 시작 -->
   <nav class="top-button btn_btn flex flex-jc-c flex-ai-c">
+=======
+  <!-- 맨 위 버튼 시작 -->
+  <nav class="top-button btn flex flex-jc-c flex-ai-c">
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
     <div class="">
       <a href="#header"><i class="fas fa-chevron-up"></i></a>
     </div>
@@ -4191,7 +4733,11 @@ body{
   <!-- 맨 위 버튼 끝 -->
 
   <!-- 맨 아래 버튼 시작 -->
+<<<<<<< HEAD
   <nav class="bottom-button btn_btn flex flex-jc-c flex-ai-c">
+=======
+  <nav class="bottom-button btn flex flex-jc-c flex-ai-c">
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
     <div class="">
       <a href="#bottom"><i class="fas fa-chevron-down"></i></a>
     </div>
@@ -4277,7 +4823,11 @@ function hasScrolled() {
 
 /* MobileTopBar 옵션 시작 */
 function MobileTopBar__init() {
+<<<<<<< HEAD
   $(".mobile-top-bar_btn_btn-toggle-side-bar").click(function () {
+=======
+  $(".mobile-top-bar_btn-toggle-side-bar").click(function () {
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
     let $this = $(this);
 
     if ($this.hasClass("active")) {
@@ -4586,7 +5136,11 @@ function doModifyReplyForm__init() {
       $(this).parents().parents().addClass('active');
       $(this).parents().addClass('active');
       $(this).parents().prev().addClass('active');
+<<<<<<< HEAD
       $('.reply-list-box-cell__option-btn_btns').next().addClass('active');
+=======
+      $('.reply-list-box-cell__option-btns').next().addClass('active');
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
 
   });
 }
@@ -4621,7 +5175,11 @@ function doModifyreReplyForm__init() {
       $(this).parents().parents().addClass('active');
       $(this).parents().addClass('active');
       $(this).parents().prev().addClass('active');
+<<<<<<< HEAD
       $('.reReply-list-box-cell__option-btn_btns').next().addClass('active');
+=======
+      $('.reReply-list-box-cell__option-btns').next().addClass('active');
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510
 
   });
 }
@@ -4683,6 +5241,7 @@ doModifyreReplyForm__init();
       });
       postcode.open();
   }
+<<<<<<< HEAD
 
   function execDaumPostcode2() {
     var postcode = new daum.Postcode({
@@ -4789,3 +5348,9 @@ function checkPhoneAuto(){
     window.location.href='/user/leave';
   }
 </script>
+=======
+</script>
+
+
+
+>>>>>>> 1ef70921b2024a7ed0a6bd74819cfcf9e9b5d510

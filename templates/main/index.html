@@ -32,6 +32,7 @@
             left:0;
             width: 100%;
             height: 790px;
+
             opacity: 0.18;
             overflow: hidden;
             z-index: -1 !important;
@@ -198,8 +199,9 @@
                                                         <li><a href="elements.html">Element</a></li>
                                                     </ul>
                                                 </li>
-                                                <li><a href="contact.html">Contact</a></li>
                                                 -->
+                                                <li><a href="/">Contact</a></li>
+                                                
                                                 <!-- Button -->
                                                 {% if 'user' in session %}
                                                 <li class="button-header margin-left"><a href="/user/logout" class="btn">Log Out</a></li>
@@ -265,6 +267,7 @@
                                     </span>
                                 </div>
                             </div>
+
                             <!-- 녹음 내용을 표시할 공간 -->
                             <div id="recording-content" style="display: none;">글자</div>
                             <div id="center-circle2" >클릭해 보세요</div>
@@ -915,17 +918,48 @@
 </html>
 
 <script>
-    document.getElementById('center-circle').addEventListener('click', function(){
-        var circleText = document.getElementById('circle-text');
-        var recordingContent = document.getElementById('recording-content');
+    // document.getElementById('center-circle').addEventListener('click', function(){
+    //     var circleText = document.getElementById('circle-text');
+    //     var recordingContent = document.getElementById('recording-content');
 
-        if(circleText.textContent === '녹음 시작'){
-            circleText.textContent = '녹음 종료';
-            recordingContent.style.display = 'none'; // 녹음 시작 시 텍스트 숨김
-        } else{
-            circleText.textContent = '녹음 시작';
-            recordingContent.textContent = '여기에 녹음 내용을 표시합니다.'; // 녹음 종료 시 텍스트 추가 및 표시
-            recordingContent.style.display = 'block';
-        }
-    })
+    //     if(circleText.textContent === '녹음 시작'){
+    //         circleText.textContent = '녹음 종료';
+    //         recordingContent.style.display = 'none'; // 녹음 시작 시 텍스트 숨김
+    //     } else{
+    //         circleText.textContent = '녹음 시작';
+    //         recordingContent.textContent = '여기에 녹음 내용을 표시합니다.'; // 녹음 종료 시 텍스트 추가 및 표시
+    //         recordingContent.style.display = 'block';
+    //     }
+    // })
+    document.addEventListener('DOMContentLoaded', function () {
+        var centerText = document.getElementById('circle-text');
+        var recordButton = document.getElementById("circle-circle"); // HTML에 recordButton이 있다고 가정합니다.
+
+
+        centerText.addEventListener('click', function () {
+            centerText.innerText = '녹음 중지';
+
+            fetch('/record', {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    statusElement.innerText = '녹음 완료. ' + data.message;
+                } else {
+                    statusElement.innerText = '오류: ' + data.message;
+                }
+            })
+            .catch(error => {
+                console.error('오류:', error);
+                statusElement.innerText = '녹음 중 오류 발생.';
+            });
+        });
+
+        // recordButton 클릭 이벤트에 필요한 경우 추가 기능을 추가합니다.
+        recordButton.addEventListener('click', function () {
+            // recordButton이 클릭되면 실행되는 코드입니다.
+        });
+    });
+   
 </script>

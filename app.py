@@ -14,6 +14,7 @@ app = Flask(__name__, static_url_path='/static')
 app.secret_key = secrets.token_hex(16)
 
 # render_template : 동적(dynamic) template directory 로 이동 // send_from_directory : 정적(static) directory 로 이동
+
 # connection = pymysql.connect(host='',  port = 3307, user = ) # 아래와 동일
 
 app.config['MYSQL_HOST'] = 'project-db-stu3.smhrd.com'
@@ -24,6 +25,17 @@ app.config['MYSQL_DB'] = 'Insa4_IOTB_final_3'
 
 mysql = MySQL(app)
 
+
+@app.route('/user/mypage')
+def mypage():
+    return render_template('/user/mypage.html')
+
+
+@app.route('/user/test')
+def test():
+    return render_template('/user/test.html')
+
+
 @app.route('/')
 def main():
     if 'user' in session:
@@ -32,6 +44,7 @@ def main():
         return render_template('/main/index.html', message = user_Name)
     else:
         return render_template("/main/index.html")
+
 
 @app.route('/user/mypage')
 def mypage():
@@ -54,7 +67,7 @@ def registerForm():
 def loginForm():
     return render_template('/user/login.html')
 
-# 로그인 처리
+
 @app.route('/user/login', methods = ['POST'])
 def login():
     user_Id = request.form.get('user_Id')
@@ -81,6 +94,7 @@ def login():
         user = dict(zip(keys, result))
         session['user'] = user
         flash('로그인 완료', category = 'success')
+
 
         session['user_Phone'] = user_Phone # 세션에 user_Phone 정보 기입
 
@@ -160,10 +174,11 @@ def register():
     return redirect(url_for('main', user_Name = user_Name))
     
 
+
 # 폰번호 중복검사
 @app.route('/user/check_phone', methods=['GET'])
 def check_phone():
-    user_Phone = request.args.get('user_Phone') # 사용자가 입력한 폰번호
+    user_Phone = request.args.get('user_Phone') # database에 있는 폰번호 불러오기
     
     if not user_Phone:
         return jsonify({'RESULT': 'False', 'message': '폰번호를 입력해 주세요.'})
@@ -179,8 +194,6 @@ def check_phone():
     else:
         # 중복된 폰번호가 없습니다.
         return jsonify({'RESULT': 'Found', 'message': '사용 가능한 번호입니다.'})
-
-
 
 
 # 아이디 중복검사
@@ -205,6 +218,7 @@ def check_id():
 
 @app.route('/user/logout')
 def logout():
+
     # session.pop('user',None)
     session.clear()
     flash('로그아웃 완료', category='success')
@@ -215,6 +229,12 @@ def update():
     user=session.get('user')    
     if user:
         
+
+@app.route('/mypage/update', methods=["POST"])
+def update():
+    user=session.get('user')
+    if user:
+
         user_Name = user.get('user_Name')
         user_Id = user.get('user_Id')
         user_Phone1 = request.form.get('user_Phone1')
@@ -227,6 +247,7 @@ def update():
         user_PostNumber = request.form.get('user_PostNumber')
         user_Address = request.form.get('user_Address')
         user_Details = request.form.get('user_Details')
+
 
         user_Date = request.form.get('user_Date')  # 선택한 날짜 가져오기
 
@@ -244,6 +265,7 @@ def update():
         cur = mysql.connection.cursor()
         query = "UPDATE t_User SET user_Phone1=%s, user_Phone2=%s, user_Phone3=%s, user_Phone=CONCAT(%s,%s,%s), user_Pwd=%s, user_Disability=%s, user_PostNumber=%s, user_Address=%s, user_Details=%s, user_Year=LPAD(%s, 4, '0'), user_Region=%s WHERE user_Id=%s"
         cur.execute(query, (user_Phone1, user_Phone2, user_Phone3, user_Phone1, user_Phone2, user_Phone3, user_Pwd, user_Disability, user_PostNumber, user_Address, user_Details, user_Year, user_Region, user_Id))
+
 
         mysql.connection.commit()
 
