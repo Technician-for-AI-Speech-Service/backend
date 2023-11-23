@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입 성공</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+
+    <style>
+        header{
+            margin-top: 30px;
+            margin-bottom: 90px;
+        }
+        a:hover{
+            text-decoration: none;
+            color: black;
+        }
+    </style>
+    
+</head>
+<body>
+    <header>
+        <nav class="mx-auto" style="width: 600px;">
+           <a href="/" class="display-1" >기술자들</a>
+        </nav>
+    </header> 
+
+    <div class="container">
+        <div class="text-center">
+            <h1 class="display-4"><span style="color: slateblue">"{{message}}"</span> 회원님 반갑습니다!</h1>
+            <img src={{url_for('static',filename="/assets/img/gallery/joinsuccess.png")}} class="rounded mx-auto d-block">
+            <br><br>
+            <a href="/">
+            <button type="submit" class="btn btn-secondary btn-lg btn-block">기술자들 홈페이지 바로가기</button>
+            </a>
+        </div>
+    </div>
+
+    <br> <br> <br> <br>
+
+        
+</body>
+</html>
