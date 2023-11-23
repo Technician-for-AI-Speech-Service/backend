@@ -9,6 +9,14 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_paginate import Pagination, get_page_parameter
 import secrets
 import os
+import wave
+import sounddevice as sd
+import pyaudio
+from datetime import datetime
+import boto3
+import pymysql
+from playsound import playsound
+import pyttsx3   
 
 app = Flask(__name__, static_url_path='/static')
 app.secret_key = secrets.token_hex(16)
@@ -312,6 +320,85 @@ def leave():
     else:
         return redirect(url_for('main'))
     
+
+
+def record_and_save_wav(file_path, duration=10, sample_rate=44100):
+    # 녹음 설정
+    recording = sd.rec(int(sample_rate * duration),
+                       samplerate=sample_rate, channels=2, dtype='int16')
+
+    sd.wait()
+
+    # WAV 파일로 저장
+    with wave.open(file_path, 'wb') as wf:
+        wf.setnchannels(2)
+        wf.setsampwidth(2)
+        wf.setframerate(sample_rate)
+        wf.writeframes(recording.tobytes())
+
+def wav_to_pcm(input_wav, output_pcm):
+    with wave.open(input_wav, 'rb') as wav_file:
+        # WAV 파일의 포맷 정보 가져오기
+        params = wav_file.getparams()
+
+        # PCM 파일로 쓰기
+        with open(output_pcm, 'wb') as pcm_file:
+            # WAV 파일 헤더를 제외한 데이터를 PCM 파일에 쓰기
+            pcm_file.write(wav_file.readframes(params.nframes))
+
+
+def S3_input_data(formatted_now):
+    AWS_ACCESS_KEY = "AKIAUXQ6F3NS2FCBDBMS"
+    AWS_SECRET_ACCESS_KEY = "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"
+    AWS_S3_BUCKET_NAME = "gjaischool-aiot-bcalss-tec-audio2"
+    print("S3_OPEN!")
+    # S3 클라이언트를 생성합니다.
+
+    try:
+        s3 = boto3.client('s3',
+                        aws_access_key_id=AWS_ACCESS_KEY, 
+                        aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+        local_file_path = "./instance/output.pcm"
+        s3_file_path =f"user/{formatted_now}.pcm"
+
+        # 파일을 S3에 업로드합니다.
+        s3.upload_file(local_file_path, AWS_S3_BUCKET_NAME, s3_file_path)
+
+        print(f"{s3_file_path} 업로드가 완료되었습니다.")
+        s3.close()
+        print("S3_CLOSE!")
+        return s3_file_path
+    except:
+        s3.close()
+        return print("S3_error")
+
+def S3_outut_data(formatted_now):
+    AWS_ACCESS_KEY = "AKIAUXQ6F3NS2FCBDBMS"
+    AWS_SECRET_ACCESS_KEY = "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"
+    AWS_S3_BUCKET_NAME = "gjaischool-aiot-bcalss-tec-audio2"
+
+    # S3 클라이언트를 생성합니다.
+    s3 = boto3.client('s3',
+                    aws_access_key_id=AWS_ACCESS_KEY, 
+                    aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+
+    try:
+        # 다운로드할 로컬 파일 경로를 설정합니다.
+        local_download_path = f"./instance/download/{formatted_now}.pcm"
+        print(local_download_path)
+        # S3 키를 설정하면서 폴더 경로를 포함시킵니다.
+        s3_key = f"user/{formatted_now}.pcm"
+        print(s3_key)
+        # 파일을 S3에서 다운로드합니다.
+        s3.download_file(AWS_S3_BUCKET_NAME, s3_key, local_download_path)
+        print(f"{AWS_S3_BUCKET_NAME}/{s3_key}을(를) {local_download_path}로 다운로드했습니다.")
+        s3.close()
+        print("s3_close")
+    except:
+        s3.close()
+        print("error_s3_close")
+
+
 # 실행
 if __name__ == '__main__':
     # app.run(debug=False, host="0.0.0.0")
