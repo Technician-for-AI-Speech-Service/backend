@@ -34,16 +34,6 @@ app.config['MYSQL_DB'] = 'Insa4_IOTB_final_3'
 mysql = MySQL(app)
 
 
-@app.route('/user/mypage')
-def mypage():
-    return render_template('/user/mypage.html')
-
-
-@app.route('/user/test')
-def test():
-    return render_template('/user/test.html')
-
-
 @app.route('/')
 def main():
     if 'user' in session:
@@ -63,9 +53,6 @@ def mypage():
         else:
             return render_template('/user/mypage.html')
 
-@app.route('/user/test')
-def test():
-    return render_template('/user/test.html')
 
 @app.route('/user/registerForm')
 def registerForm():
