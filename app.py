@@ -17,6 +17,8 @@ import boto3
 import pymysql
 from playsound import playsound
 import pyttsx3   
+import record
+
 
 app = Flask(__name__, static_url_path='/static')
 app.secret_key = secrets.token_hex(16)
@@ -136,7 +138,7 @@ def register():
     
     cur = mysql.connection.cursor()
     
-    cur.execute("INSERT INTO t_User (user_Name, user_Id, user_Phone, user_Pwd, user_Gender, user_Disability, user_Year, user_Region, user_Phone1, user_Phone2, user_Phone3, user_Date, user_PostNumber, user_Address, user_Details) VALUES (%s, %s, CONCAT(%s,%s,%s), %s, %s, %s, LPAD(%s, 4, '0'), %s, %s, %s, %s, %s, %s, %s, %s);",
+    cur.execute("INSERT INTO t_User (user_Name, user_Id, user_Phone, user_Pwd, user_Gender, user_Disability, user_Year, user_Region, user_Phone1, user_Phone2, user_Phone3, user_Date, user_PostNumber, user_Address, user_Details) VALUES (%s, %s, CONCAT(%s,%s,%s), SHA(%s), %s, %s, LPAD(%s, 4, '0'), %s, %s, %s, %s, %s, %s, %s, %s);",
                 (user_Name, user_Id, user_Phone1, user_Phone2, user_Phone3, user_Pwd, user_Gender, user_Disability, user_Year, user_Region, user_Phone1, user_Phone2, user_Phone3, user_Date, user_PostNumber, user_Address, user_Details))
     
     mysql.connection.commit()
@@ -218,11 +220,6 @@ def logout():
     session.clear()
     flash('로그아웃 완료', category='success')
     return redirect('/')
-
-@app.route('/user/update', methods=["POST"])
-def update():
-    user=session.get('user')    
-    if user:
         
 
 @app.route('/mypage/update', methods=["POST"])
@@ -258,7 +255,7 @@ def update():
 
 
         cur = mysql.connection.cursor()
-        query = "UPDATE t_User SET user_Phone1=%s, user_Phone2=%s, user_Phone3=%s, user_Phone=CONCAT(%s,%s,%s), user_Pwd=%s, user_Disability=%s, user_PostNumber=%s, user_Address=%s, user_Details=%s, user_Year=LPAD(%s, 4, '0'), user_Region=%s WHERE user_Id=%s"
+        query = "UPDATE t_User SET user_Phone1=%s, user_Phone2=%s, user_Phone3=%s, user_Phone=CONCAT(%s,%s,%s), user_Pwd=SHA(%s), user_Disability=%s, user_PostNumber=%s, user_Address=%s, user_Details=%s, user_Year=LPAD(%s, 4, '0'), user_Region=%s WHERE user_Id=%s"
         cur.execute(query, (user_Phone1, user_Phone2, user_Phone3, user_Phone1, user_Phone2, user_Phone3, user_Pwd, user_Disability, user_PostNumber, user_Address, user_Details, user_Year, user_Region, user_Id))
 
 
@@ -307,86 +304,31 @@ def leave():
     else:
         return redirect(url_for('main'))
     
+@app.route('/record', methods=['POST'])
+def record():
+    user = session.get('user')
+    if user: # 로그인 상태
+        user_Id = user.get('user_Id')
+        file_path = './instance/recorded_audio.wav'
+        recode.record_and_save_wav(file_path)
+        output_pcm_file = './instance/output.pcm'
+        recode.wav_to_pcm(file_path, output_pcm_file)
+        now = datetime.now()
+        formatted_now = now.strftime("%Y_%m_%d_%H_%M_%S")
+        print(formatted_now)
+        # PCM 파일 변환이후에 S3_input 으로 data 올림
+        s3_file_path = recode.S3_input_data(formatted_now)
+        recode.Speech_input(user_Id , s3_file_path)
 
-
-def record_and_save_wav(file_path, duration=10, sample_rate=44100):
-    # 녹음 설정
-    recording = sd.rec(int(sample_rate * duration),
-                       samplerate=sample_rate, channels=2, dtype='int16')
-
-    sd.wait()
-
-    # WAV 파일로 저장
-    with wave.open(file_path, 'wb') as wf:
-        wf.setnchannels(2)
-        wf.setsampwidth(2)
-        wf.setframerate(sample_rate)
-        wf.writeframes(recording.tobytes())
-
-def wav_to_pcm(input_wav, output_pcm):
-    with wave.open(input_wav, 'rb') as wav_file:
-        # WAV 파일의 포맷 정보 가져오기
-        params = wav_file.getparams()
-
-        # PCM 파일로 쓰기
-        with open(output_pcm, 'wb') as pcm_file:
-            # WAV 파일 헤더를 제외한 데이터를 PCM 파일에 쓰기
-            pcm_file.write(wav_file.readframes(params.nframes))
-
-
-def S3_input_data(formatted_now):
-    AWS_ACCESS_KEY = "AKIAUXQ6F3NS2FCBDBMS"
-    AWS_SECRET_ACCESS_KEY = "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"
-    AWS_S3_BUCKET_NAME = "gjaischool-aiot-bcalss-tec-audio2"
-    print("S3_OPEN!")
-    # S3 클라이언트를 생성합니다.
-
-    try:
-        s3 = boto3.client('s3',
-                        aws_access_key_id=AWS_ACCESS_KEY, 
-                        aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
-        local_file_path = "./instance/output.pcm"
-        s3_file_path =f"user/{formatted_now}.pcm"
-
-        # 파일을 S3에 업로드합니다.
-        s3.upload_file(local_file_path, AWS_S3_BUCKET_NAME, s3_file_path)
-
-        print(f"{s3_file_path} 업로드가 완료되었습니다.")
-        s3.close()
-        print("S3_CLOSE!")
-        return s3_file_path
-    except:
-        s3.close()
-        return print("S3_error")
-
-def S3_outut_data(formatted_now):
-    AWS_ACCESS_KEY = "AKIAUXQ6F3NS2FCBDBMS"
-    AWS_SECRET_ACCESS_KEY = "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"
-    AWS_S3_BUCKET_NAME = "gjaischool-aiot-bcalss-tec-audio2"
-
-    # S3 클라이언트를 생성합니다.
-    s3 = boto3.client('s3',
-                    aws_access_key_id=AWS_ACCESS_KEY, 
-                    aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
-
-    try:
-        # 다운로드할 로컬 파일 경로를 설정합니다.
-        local_download_path = f"./instance/download/{formatted_now}.pcm"
-        print(local_download_path)
-        # S3 키를 설정하면서 폴더 경로를 포함시킵니다.
-        s3_key = f"user/{formatted_now}.pcm"
-        print(s3_key)
-        # 파일을 S3에서 다운로드합니다.
-        s3.download_file(AWS_S3_BUCKET_NAME, s3_key, local_download_path)
-        print(f"{AWS_S3_BUCKET_NAME}/{s3_key}을(를) {local_download_path}로 다운로드했습니다.")
-        s3.close()
-        print("s3_close")
-    except:
-        s3.close()
-        print("error_s3_close")
+        # S3 에서 DATA 받아오는거 DB에서 저장된거 Select 해올것! 
+        speak_id = recode.select_speech_Id(user_Id , s3_file_path) 
+        Output_text = "안녕하세요?"
+        recode.text_to_speech(Output_text)
+        recode.input_STT_TTS(user_Id, speak_id, Output_text)
+        return jsonify({'status': 'success', 'message': '오디오가 성공적으로 녹음되었습니다'})
 
 
 # 실행
 if __name__ == '__main__':
     # app.run(debug=False, host="0.0.0.0")
-    app.run(debug=True, host="")
+    app.run(debug=True, host="0.0.0.0")
