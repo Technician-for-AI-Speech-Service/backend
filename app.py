@@ -11,13 +11,12 @@ import secrets
 import os
 import wave
 import sounddevice as sd
-import pyaudio
 from datetime import datetime
 import boto3
 import pymysql
 from playsound import playsound
 import pyttsx3   
-import record
+import recode
 
 
 app = Flask(__name__, static_url_path='/static')
