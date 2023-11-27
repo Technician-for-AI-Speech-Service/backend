@@ -1,0 +1,204 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title> App landing</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="/manifest" href="site.webmanifest">
+    <link rel="shortcut icon" type="image/x-icon" href={{url_for('static', filename="assets/img/favicon.ico")}}>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">     
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+
+	<!-- CSS here -->
+	<link rel="stylesheet" href={{url_for('static', filename="assets/css/bootstrap.min.css")}}>
+	<link rel="stylesheet" href={{url_for('static', filename="assets/css/owl.carousel.min.css")}}>
+	<link rel="stylesheet" href={{url_for('static', filename="assets/css/slicknav.css")}}>
+    <link rel="stylesheet" href={{url_for('static', filename="assets/css/flaticon.css")}}>
+    <link rel="stylesheet" href={{url_for('static', filename="assets/css/progressbar_barfiller.css")}}>
+    <link rel="stylesheet" href={{url_for('static', filename="assets/css/gijgo.css")}}>
+    <link rel="stylesheet" href={{url_for('static', filename="assets/css/animate.min.css")}}>
+    <link rel="stylesheet" href={{url_for('static', filename="assets/css/animated-headline.css")}}>
+	<link rel="stylesheet" href={{url_for('static', filename="assets/css/magnific-popup.css")}}>
+	<link rel="stylesheet" href={{url_for('static', filename="assets/css/fontawesome-all.min.css")}}>
+	<link rel="stylesheet" href={{url_for('static', filename="assets/css/themify-icons.css")}}>
+	<link rel="stylesheet" href={{url_for('static', filename="assets/css/slick.css")}}>
+	<link rel="stylesheet" href={{url_for('static', filename="assets/css/nice-select.css")}}>
+	<link rel="stylesheet" href={{url_for('static', filename="assets/css/style.css")}}>
+
+<style>
+    .login-body {
+        background-image: url("{{ url_for('static', filename='assets/img/login1.png') }}");
+        background-size: cover; /* 배경 이미지가 전체 영역을 커버하도록 설정 */
+        background-repeat: no-repeat; /* 이미지가 반복되지 않도록 설정 */
+        background-position: center; /* 이미지가 중앙에 위치하도록 설정 */
+    }
+</style>
+
+</head>
+<body>
+
+    <!-- ? Preloader Start 
+    <div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="preloader-circle"></div>
+                <div class="preloader-img pere-text">
+                    <img src={{url_for('static', filename="assets/img/logo/loder.png")}} alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+    -->
+    <!-- Preloader Start-->
+
+
+<main class="login-body">
+
+
+        <!-- Login Admin -->
+    <form class="form-default" action="/user/login" method="POST">        
+        <div class="login-form">
+            <!-- logo-login -->
+            
+            <div class="logo-login">
+                <a href="/"><img src={{url_for('static', filename="assets/img/key1.png")}} alt=""></a>
+            </div>
+           
+            <h2>Login Here</h2>
+            <div class="form-input">
+                <i class="fa fa-street-view" style="color: #3366FF; font-size: 2.3rem;"></i>
+                <label for="name">ID</label>
+                <input type="ID" id="user_Id" name="user_Id" placeholder="ID">
+            </div>
+            <div class="form-input">
+                <i class="fa fa-lock" style="color: #3366FF; font-size: 2rem;"></i>
+                <label for="name">Password</label>
+                <input type="password" id="user_Pwd" name="user_Pwd" placeholder="Password">
+            </div>
+
+            <div class="form-input pt-30" style= "margin-bottom: 0;">
+                <input type="submit" name="submit" value="LOG IN" style="background-color: #f03699; height:45px;">
+            </div>
+
+            <div class="form-input pt-30" style="margin-top : 1rem;">
+                <input type="button" name="button" value="SIGN UP" style="background-color: #3366FF; height: 45px;" onclick = "location.href='/user/registerForm'";>
+                
+            </div>
+            <!-- Forget Password -->
+            <a href="#" class="forget">Forget Password</a>
+            <!-- Forget Password -->
+
+            </div>
+    </form>
+    <!-- /end login form -->
+</main>
+
+<!-- 로그인 실패 modal 창-->
+<div id ="login-fail-modal" class="modal fade">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">로그인 실패</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            아이디와 비밀번호를 확인해 주세요.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">확인</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <script src={{url_for('static', filename="assets/js/vendor/modernizr-3.5.0.min.js")}}></script>
+    <!-- Jquery, Popper, Bootstrap -->
+    <script src={{url_for('static', filename="assets/js/vendor/jquery-1.12.4.min.js")}}></script>
+    <script src={{url_for('static', filename="assets/js/popper.min.js")}}></script>
+    <script src={{url_for('static', filename="assets/js/bootstrap.min.js")}}></script>
+    <!-- Jquery Mobile Menu -->
+    <script src={{url_for('static', filename="assets/js/jquery.slicknav.min.js")}}></script>
+
+    <!-- Video bg -->
+    <script src={{url_for('static', filename="assets/js/jquery.vide.js")}}></script>
+
+    <!-- Jquery Slick , Owl-Carousel Plugins -->
+    <script src={{url_for('static', filename="assets/js/owl.carousel.min.js")}}></script>
+    <script src={{url_for('static', filename="assets/js/slick.min.js")}}></script>
+    <!-- One Page, Animated-HeadLin -->
+    <script src={{url_for('static', filename="assets/js/wow.min.js")}}></script>
+    <script src={{url_for('static', filename="assets/js/animated.headline.js")}}></script>
+    <script src={{url_for('static', filename="assets/js/jquery.magnific-popup.js")}}></script>
+
+    <!-- Date Picker -->
+    <script src={{url_for('static', filename="assets/js/gijgo.min.js")}}></script>
+    <!-- Nice-select, sticky -->
+    <script src={{url_for('static', filename="assets/js/jquery.nice-select.min.js")}}></script>
+    <script src={{url_for('static', filename="assets/js/jquery.sticky.js")}}></script>
+    <!-- Progress -->
+    <script src={{url_for('static', filename="assets/js/jquery.barfiller.js")}}></script>
+    
+    <!-- counter , waypoint,Hover Direction -->
+    <script src={{url_for('static', filename="assets/js/jquery.counterup.min.js")}}></script>
+    <script src={{url_for('static', filename="assets/js/waypoints.min.js")}}></script>
+    <script src={{url_for('static', filename="assets/js/jquery.countdown.min.js")}}></script>
+    <script src={{url_for('static', filename="assets/js/hover-direction-snake.min.js")}}></script>
+
+    <!-- contact js -->
+    <script src={{url_for('static', filename="assets/js/contact.js")}}></script>
+    <script src={{url_for('static', filename="assets/js/jquery.form.js")}}></script>
+    <script src={{url_for('static', filename="assets/js/jquery.validate.min.js")}}></script>
+    <script src={{url_for('static', filename="assets/js/mail-script.js")}}></script>
+    <script src={{url_for('static', filename="assets/js/jquery.ajaxchimp.min.js")}}></script>
+    
+    <!-- Jquery Plugins, main Jquery -->	
+    <script src={{url_for('static', filename="assets/js/plugins.js")}}></script>
+    <script src={{url_for('static', filename="assets/js/main.js")}}></script>
+    
+    </body>
+</html>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+  $('form').submit(function(event) {
+    event.preventDefault(); // 서버로 폼을 전송하지 않도록 방지
+
+    $.ajax({
+      url: '/user/login',
+      type: 'post',
+      dataType: 'json',
+      data: $('form').serialize(),
+      success: function(result) {
+        if (result.message === "success") {
+//        sessionStorage.setItem('user_Name',result.user_Name);
+          window.location.href="/";
+        } else {
+          //로그인 실패시 modal 뛰우기
+          $('#login-fail-modal').modal('show');
+          
+          //로그인 실패시 alert 뛰우기
+          //alert('아이디 or 비밀번호가 올바르지 않습니다.');
+        }
+      },
+      error: function(xhr, status, error) {
+          //로그인 실패시 modal 뛰우기
+          $('#login-fail-modal').modal('show');
+
+        // alert('아이디 or 비밀번호가 올바르지 않습니다.: ' + xhr.responseText);
+      }
+    });
+  });
+});
+</script>
+
+<script src="form.js"></script>

@@ -1,0 +1,10 @@
+Flask
+Redis
+librosa
+matplotlib
+scikit-image
+ffmpy
+Levenshtein
+torchvision==0.8.0
+torchaudio==0.7.0
+tensorflow

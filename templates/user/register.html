@@ -1,0 +1,587 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title> App landing</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="shortcut icon" type="image/x-icon" href={{url_for('static', filename="assets/img/favicon.ico")}}>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+    <!-- Bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">     
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+
+
+	<!-- CSS here -->
+	<link rel="stylesheet" href={{url_for('static', filename="assets/css/bootstrap.min.css")}}>
+	<link rel="stylesheet" href={{url_for('static', filename="assets/css/owl.carousel.min.css")}}>
+	<link rel="stylesheet" href={{url_for('static', filename="assets/css/slicknav.css")}}>
+    <link rel="stylesheet" href={{url_for('static', filename="assets/css/flaticon.css")}}>
+    <link rel="stylesheet" href={{url_for('static', filename="assets/css/progressbar_barfiller.css")}}>
+    <link rel="stylesheet" href={{url_for('static', filename="assets/css/gijgo.css")}}>
+    <link rel="stylesheet" href={{url_for('static', filename="assets/css/animate.min.css")}}>
+    <link rel="stylesheet" href={{url_for('static', filename="assets/css/animated-headline.css")}}>
+	<link rel="stylesheet" href={{url_for('static', filename="assets/css/magnific-popup.css")}}>
+	<link rel="stylesheet" href={{url_for('static', filename="assets/css/fontawesome-all.min.css")}}>
+	<link rel="stylesheet" href={{url_for('static', filename="assets/css/themify-icons.css")}}>
+	<link rel="stylesheet" href={{url_for('static', filename="assets/css/slick.css")}}>
+	<link rel="stylesheet" href={{url_for('static', filename="assets/css/nice-select.css")}}>
+	<link rel="stylesheet" href={{url_for('static', filename="assets/css/style.css")}}>
+
+    <style>
+
+        .register-body {
+            background-image: url("{{ url_for('static', filename='assets/img/6723.jpg') }}");
+            background-size: ; /* 배경 이미지가 컨테이너를 꽉 채우도록 설정 */
+            width:100%;
+            height:840px;
+        }
+        
+        
+
+        .login-form {
+            max-height: 80%; /* 예시로 설정한 최대 높이 */
+            overflow-y: auto;  세로 스크롤바 활성화 
+            
+        }
+   
+        @media (max-width: 575px) {
+            .responsive-flex .form-input input,
+            .responsive-flex .form-input select,
+            .responsive-flex .form-input select option {
+                font-size: 10px; /* select 태그의 글자 크기 조정 */
+            }
+        }
+        @media (min-width: 575px) {
+             div.form-input .birthdate-group{
+                padding-left: 50px;
+            }
+        }
+        @media (max-width: 575px) {
+            .form-input .post-number {
+                margin-left: 10px !important;
+            }
+        }
+        @media (max-width: 575px){
+            #post{
+                width: 80px;
+                font-size: 12px;
+            }
+        }
+
+        a:hover{
+            text-decoration: none;
+            color: black;
+        }
+        #phone1, #phone2, #phone3{
+            border: none;
+        }
+        .form-check-label{
+            font-size:1rem; 
+            font-weight: bold;
+        }
+    
+        .id_input{
+            color: red;
+            display: inline-block;
+        }
+        .id_ok{
+            color: #008000;
+            display: none;
+        }
+        .id_already{
+            color: #6A82FB;
+            display:none;
+        }
+        .phone_input{
+            color: red;
+            display: inline-block;
+        }
+        .phone_ok{
+            color: #008000;
+            display: none;
+        }
+        .phone_already{
+            color: #6A82FB;
+            display:none;
+        }
+        .phone_regex{
+            color: darkskyblue;
+            display:none;
+        }
+
+        /* 찾기 버튼 hover 스타일 */
+        .btn-outline-secondary:hover {
+            background-color: black !important;
+            color: white !important;
+            cursor: pointer !important;
+        }
+
+        /* SIGN UP 버튼 hover 스타일 */
+        input[type="button"][name="button"]:hover {
+            background-color: black !important;
+            color: white !important;
+        }
+
+    </style>
+</head>
+<script>
+function CheckUser(){
+    var regExpId = /^[a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+    var regExpName =/^[a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; /* var regExpName = /^[가-힣]+$/; */
+    
+    var regExpPhone1 = /^\d{3}$/; /*  minlength=3 maxlength=3 */
+    var regExpPhone2 = /^\d{3,4}$/; /* minlength=3 maxlength=4 */
+    var regExpPhone3 = /^\d{4}$/; /* minlength=3 maxlength=4 */
+    var regExpPhone =/^\d{3}-\d{3,4}-\d{4}$/; /* phone 통합본 */
+//    var regExpEmail01 =/^[0-9a-zA-Z]+$/;
+//    var regExpEmail02 =/^[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+    
+    // 변수선언
+    var form = document.User; // form.User 을 form으로 지정
+    var id = form.id.value;
+    var name = form.name.value;
+    var password1 = form.password1.value;
+    var password2 = form.password2.value;
+    var phone1 = form.phone1.value;
+    var phone2 = form.phone2.value;
+    var phone3 = form.phone3.value;
+    var phone = form.phone1.value + "-"+form.phone2.value+"-"+form.phone3.value;
+    var gender = form.gender.value;
+    var date = form.date.value;
+    var postcode = form.postcode.value;
+    var address = form.address.value;
+    var extraAddress = form.extraAddress.value;
+//    var emailId = form.emailId.value;
+//    var emailDomain = form.domainInput.value;
+
+    if (!id) {
+        alert("아이디를 입력하세요.");
+        form.id.select();
+        return;
+    } else if (!regExpId.test(id)) {
+        alert("아이디는 문자로 시작해야 합니다.");
+        form.id.select();
+        return;
+    }
+
+
+//    if(!regExpName.test(name)){
+//        alert("이름은 한글 혹은 영문으로만 입력합니다.")
+//        form.name.select();
+//        return;
+//    }
+
+    if(!regExpPhone1.test(phone1)){
+        alert("연락처를 입력해주세요.")
+        form.phone1.select();
+        return;
+    }
+    if(!regExpPhone2.test(phone2)){
+        alert("연락처를 입력해주세요.")
+        form.phone2.select();
+        return;
+    }
+    if(!regExpPhone3.test(phone3)){
+        alert("연락처를 입력해주세요.")
+        form.phone3.select();
+        return;
+    }
+
+    if(password1 != password2){
+        alert("비밀번호가 일치하지 않습니다")
+        form.password1.value="";
+        form.password2.value="";
+        form.password1.focus();
+        return;
+    }
+
+    form.submit();
+}
+</script>
+
+<body>
+    <!-- ? Preloader Start 
+    <div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="preloader-circle"></div>
+                <div class="preloader-img pere-text">
+                    <img src={{url_for('static', filename="assets/img/logo/loder.png")}} alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+-->
+    <!-- Preloader Start-->
+
+
+<!-- Register -->
+
+<!--
+data-vide-bg="/static/assets/img/login-bg.mp4"
+-->    
+<main class="register-body">   
+    <!-- Login Admin -->
+    <form action = '/user/register' name='User' class="form-default" method="POST" enctype = "multipart/form-data">
+        
+        <div class="login-form">
+            <!-- logo-login -->
+
+            <div class="logo-login">
+                <a href="/"><img src={{url_for('static', filename="assets/img/key1.png")}} alt=""></a>
+            </div>
+
+            <h2>회원 가입</h2>
+            <div class="form-input" style="display: flex; align-items: center; width: 100%;">
+                <label for="name" style="margin-right: 10px; white-space: nowrap;">Full name</label>
+                <input type="text" name="user_Name" id="name" placeholder="Full name">
+            </div>
+            
+            <div class="form-input" style="display: flex; align-items: center; width: 100%;">
+                <label for="name" style="margin-right: 30px; white-space: nowrap;">User ID</label>
+                <input type="ID" name="user_Id" id="id" oninput= "checkIdAuto()" placeholder="ID" required >
+            </div>
+
+            <div class="btn-outline-secondary" type="button" style="display:flex; align-items: center; justify-content: center; flex-direction: column; height: 24px;" readonly>
+                <span class="id_input">아이디를 입력하세요</span>
+                <span class="id_ok">사용 가능한 아이디입니다.</span>
+                <span class="id_already">이미 사용중인 아이디입니다.</span>
+            </div>
+
+            <div class="form-input">
+                <label for="name">Phone Number</label>
+            </div>
+
+            <div class="form-input" style="display:flex;">
+                <input type="text" name="user_Phone1" id="phone1" class="form-control mb-2 mr-sm-2" value="010" minlength="3" maxlength="3" oninput="checkPhoneAuto()" style="border: 3px solid #000;" required>
+                <input type="text" name="user_Phone2" id="phone2" class="form-control mb-2 mr-sm-2" minlength="3" maxlength="4" oninput="checkPhoneAuto()" style="border: 3px solid #000;" required>
+                <input type="text" name="user_Phone3" id="phone3" class="form-control mb-2 mr-sm-2" minlength="4" maxlength="4" oninput="checkPhoneAuto()" style="border: 3px solid #000;" required>
+            </div>
+            
+            <div class="btn-outline-secondary" type="button" style="display:flex; align-items: center; justify-content: center; flex-direction: column; height: 24px;" readonly>
+                <span class="phone_input">번호를 입력하세요</span>
+                <span class="phone_ok">사용 가능한 폰번호입니다.</span>
+                <span class="phone_already">이미 사용중인 폰번호입니다.</span>
+                <span class="phone_regex">사용 불가능한 번호입니다.</span>
+            </div>
+
+
+            <div class="form-input">
+                <div class = "form-input">
+                    <label for="name">Password</label>
+                <div class="form-input" style = "display: flex; width:auto; margin: 0;">
+                <input type="password" class="form-control mb-2 mr-sm-2" id="password1" name="user_Pwd" placeholder="비밀번호 입력" required>
+                <input type="password" class="form-control mb-2 mr-sm-2" id="password2" placeholder="비밀번호 확인" required>
+                </div>
+                </div>
+
+                <div class="responsive-flex" style="display: flex; justify-content: space-between;">
+                    <!-- Labels Row -->
+                    <div class="form-input" style="flex: 1; padding-right: 10px; margin: 0;">
+                        <label for="gender">Gender</label>
+                    </div>
+                    <div class="form-input" style="flex: 1; padding-left: 1px; margin: 0;">
+                        <label for="disease">Disease</label>
+                    </div>
+                    <div class="form-input birthdate-group" style="flex: 1; padding-left: 10px; margin: 0;">
+                        <label for="birthdate">Birth_date</label>
+                    </div>
+                </div>
+                
+                <div class="responsive-flex" style="display: flex; justify-content: space-between; margin-top: 0;">
+                    <!-- Selects Row -->
+                    <div class="form-input" style="flex: 1; padding-right: 10px;">
+                        <select name="user_Gender" id="gender" class="form-control mb-2 mr-sm-2" required>
+                            <option alt="male" value="남">남자</option>
+                            <option alt="female" value="여">여자</option>
+                        </select>
+                    </div>
+                    <div class="form-input disease" style="flex: 1; padding-left: 10px;">
+                        <select name="user_Disability" style="width:100px; height: 50px; font-size:4px; !important;" id="disability" class="form-control mb-2 mr-sm-2" required>
+                            <option alt="brain" value="뇌신경장애">뇌신경장애</option>
+                            <option alt="language" value="언어/청각장애">언어/청각장애</option>
+                            <option alt="larynx" value="후두장애">후두장애</option>
+                        </select>
+                    </div>
+                    <div class="form-input birthdate-group" style="flex: 1; padding-left: 10px; width:20px;">
+                        <input type="date" name="user_Date" id="date" class="form-control mb-2 mr-sm-2" required>
+                    </div>
+                </div>
+                
+
+                <div class="form-input" align="center">
+                    <div class="form-input" style = "display: flex; width:auto; margin: 0;">
+                      
+                        <div>
+                            <button id="post" class="btn-outline-secondary" style = "width: 150px; background-color:#009966; color: #fff; line-height: 2.2; font-size: 18px; font-weight: bolder; border: 0px; border-radius: 15px; box-shadow: none;" type="button" onclick="execDaumPostcode()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-houses-fill" viewBox="0 0 16 16" style="margin-right: 10px;">
+                                <path d="M7.207 1a1 1 0 0 0-1.414 0L.146 6.646a.5.5 0 0 0 .708.708L1 7.207V12.5A1.5 1.5 0 0 0 2.5 14h.55a2.51 2.51 0 0 1-.05-.5V9.415a1.5 1.5 0 0 1-.56-2.475l5.353-5.354L7.207 1Z"/>
+                                <path d="M8.793 2a1 1 0 0 1 1.414 0L12 3.793V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v3.293l1.854 1.853a.5.5 0 0 1-.708.708L15 8.207V13.5a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 4 13.5V8.207l-.146.147a.5.5 0 1 1-.708-.708L8.793 2Z"/>
+                            </svg>
+                             찾기
+                        </button>
+                        </div>
+                        <div class="post-number" style="margin-left: 60px;">
+                            <input type="text" class="form-control form-control-lg" name="user_PostNumber" id="postcode" placeholder="우편번호" aria-label="Recipient's username" aria-describedby="button-addon2" required>
+                        </div>
+                    </div>
+                     
+                   
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input class="form-control form-control-lg" type="text" name="user_Address" id="address" placeholder="주소" required>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" aria-label="Last name" class="form-control form-control-lg" name="user_Details" id="extraAddress" placeholder="상세주소">
+                        </div>
+                    </div>
+                </div>               
+
+
+
+            <div class="form-input pt-30" style="margin-top : 3rem;">
+                <input type="button" name="button" value="SIGN UP" style="background-color: #3366FF; height: 45px;" onclick = "CheckUser()" id="idCheck">
+            </div>
+            <!-- Forget Password -->
+
+            <a href="/user/loginForm" class="registration">login</a>
+
+        </div>
+    </form>
+    <!-- /end login form -->
+</main>
+
+    <!-- Scroll Up -->
+    <div id="back-top" >
+        <a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
+    </div>
+
+    <script src={{url_for('static', filename="assets/js/vendor/modernizr-3.5.0.min.js")}}></script>
+    <!-- Jquery, Popper, Bootstrap -->
+    <script src={{url_for('static', filename="assets/js/vendor/jquery-1.12.4.min.js")}}></script>
+    <script src={{url_for('static', filename="assets/js/popper.min.js")}}></script>
+    <script src={{url_for('static', filename="assets/js/bootstrap.min.js")}}></script>
+    <!-- Jquery Mobile Menu -->
+    <script src={{url_for('static', filename="assets/js/jquery.slicknav.min.js")}}></script>
+
+    <!-- Video bg -->
+    <script src={{url_for('static', filename="assets/js/jquery.vide.js")}}></script>
+
+    <!-- Jquery Slick , Owl-Carousel Plugins -->
+    <script src={{url_for('static', filename="assets/js/owl.carousel.min.js")}}></script>
+    <script src={{url_for('static', filename="assets/js/slick.min.js")}}></script>
+    <!-- One Page, Animated-HeadLin -->
+    <script src={{url_for('static', filename="assets/js/wow.min.js")}}></script>
+    <script src={{url_for('static', filename="assets/js/animated.headline.js")}}></script>
+    <script src={{url_for('static', filename="assets/js/jquery.magnific-popup.js")}}></script>
+
+    <!-- Date Picker -->
+    <script src={{url_for('static', filename="assets/js/gijgo.min.js")}}></script>
+    <!-- Nice-select, sticky -->
+    <script src={{url_for('static', filename="assets/js/jquery.nice-select.min.js")}}></script>
+    <script src={{url_for('static', filename="assets/js/jquery.sticky.js")}}></script>
+    <!-- Progress -->
+    <script src={{url_for('static', filename="assets/js/jquery.barfiller.js")}}></script>
+    
+    <!-- counter , waypoint,Hover Direction -->
+    <script src={{url_for('static', filename="assets/js/jquery.counterup.min.js")}}></script>
+    <script src={{url_for('static', filename="assets/js/waypoints.min.js")}}></script>
+    <script src={{url_for('static', filename="assets/js/jquery.countdown.min.js")}}></script>
+    <script src={{url_for('static', filename="assets/js/hover-direction-snake.min.js")}}></script>
+
+    <!-- contact js -->
+    <script src={{url_for('static', filename="assets/js/contact.js")}}></script>
+    <script src={{url_for('static', filename="assets/js/jquery.form.js")}}></script>
+    <script src={{url_for('static', filename="assets/js/jquery.validate.min.js")}}></script>
+    <script src={{url_for('static', filename="assets/js/mail-script.js")}}></script>
+    <script src={{url_for('static', filename="assets/js/jquery.ajaxchimp.min.js")}}></script>
+    
+    <!-- Jquery Plugins, main Jquery -->	
+    <script src={{url_for('static', filename="assets/js/plugins.js")}}></script>
+    <script src={{url_for('static', filename="assets/js/main.js")}}></script>
+    
+    </body>
+</html>
+
+<script>
+    function checkIdAuto() {
+        var user_Id = $('#id').val();
+
+        if (user_Id === "") {
+            $('.id_input').css("display", "inline-block");
+            $('.id_ok').css("display", "none");
+            $('.id_already').css("display", "none");
+        }else{
+            $.ajax({
+                url: "/user/check_id",
+                data: { 'user_Id': user_Id },
+                type: "GET",
+                dataType: "json"
+            }).done(function(data) {
+                // JSON 결과에 따라 결과를 출력합니다.
+                if (data.result === "False") { //이미 존재하는 아이디
+                    $('.id_already').css("display","inline-block");
+                    $('.id_ok').css("display","none");
+                    $('.id_input').css("display","none");
+                } else {
+                    $('.id_ok').css("display", "inline-block");
+                    $('.id_already').css("display", "none");
+                    $('.id_input').css("display","none");
+                }
+            });
+        }
+
+    }
+
+</script>
+
+<script>
+    function checkPhoneAuto(){
+        var user_Phone1 = $('#phone1').val();
+        var user_Phone2 = $('#phone2').val();
+        var user_phone3 = $('#phone3').val();
+        var user_Phone = $('#phone1').val() + $('#phone2').val() + $('#phone3').val();
+
+        
+        // 정규표현식 검증
+        var Phone_pattern = /^\d{11}$/;
+
+        if(user_Phone.length==11 && !Phone_pattern.test(user_Phone)){
+            $('.phone_regex').css("display","inline-block");
+            $('.phone_already').css("display","none");
+            $('.phone_input').css("display","none");
+            $('.phone_ok').css("display","none");
+        }else{
+        
+            //AJAX 요청
+            if (user_Phone.length == 11){
+                $.ajax({
+                    url:"/user/check_phone",
+                    data: {'user_Phone': user_Phone},
+                    type: "GET",
+                    datatype: "json"
+                }).done(function (data) {
+                    if (data.RESULT === "NotFound") { //이미 존재하는 폰번호
+                        $('.phone_already').css("display","inline-block");
+                        $('.phone_input').css("display", "none");
+                        $('.phone_ok').css("display","none");
+                        $('.phone_regex').css("display","none");
+                        alert("번호를 다시 입력해주세요");
+                        $('#phone2').val('');
+                        $('#phone3').val('');
+                    } else if (data.RESULT === "Found") {
+                        $('.phone_ok').css("display","inline-block");
+                        $('.phone_already').css("display","none");
+                        $('.phone_input').css("display", "none");
+                        $('.phone_regex').css("display","none");
+                    } else {
+                        alert("서버에서 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+                    }
+                }).fail(function () {
+                    alert("서버와의 통신 오류가 발생했습니다. 네트워크 환경을 확인하신 후 다시 시도해 주세요.");
+                });
+            }else{
+                $('.phone_input').css("display", "inline-block");
+                $('.phone_ok').css("display", "none");
+                $('.phone_already').css("display", "none");
+                $('.phone_regex').css("display","none");
+            }
+        }
+        
+    }
+    
+</script>
+
+<script>
+    function checkPhone() {
+        var user_Phone1 = $('#phone1').val();
+        var user_Phone2 = $('#phone2').val();
+        var user_Phone3 = $('#phone3').val();
+        var user_Phone = user_Phone1 + user_Phone2 + user_Phone3;
+        
+        if (user_Phone.length <=10) {
+            alert("폰번호를 입력해 주세요.");
+        }
+    
+
+        // AJAX 요청 부분
+        $.ajax({
+            url: "/user/check_phone",
+            data: { 'user_Phone': user_Phone },
+            type: "GET",
+            dataType: "json"
+        }).done(function (data) {
+            if (data.RESULT === "NotFound") {
+                alert("이미 존재하는 번호입니다.");
+            } else if (data.RESULT === "Found") {
+                alert("사용 가능한 번호입니다.");
+            } else {
+                alert("서버에서 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+            }
+        }).fail(function () {
+            alert("서버와의 통신 오류가 발생했습니다. 네트워크 환경을 확인하신 후 다시 시도해 주세요.");
+        });
+    }
+</script>
+
+<script>
+    function execDaumPostcode() {
+        var postcode = new daum.Postcode({
+            oncomplete: function(data) {
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var addr = ''; // 주소 변수
+                var extraAddr = ''; // 참고항목 변수
+
+                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                    addr = data.roadAddress;
+                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                    addr = data.jibunAddress;
+                }
+
+                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                if(data.userSelectedType === 'R'){
+                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                        extraAddr += data.bname;
+                    }
+                    // 건물명이 있고, 공동주택일 경우 추가한다.
+                    if(data.buildingName !== '' && data.apartment === 'Y'){
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                    if(extraAddr !== ''){
+                        extraAddr = ' (' + extraAddr + ')';
+                    }
+                    // 조합된 참고항목을 해당 필드에 넣는다.
+                    document.getElementById("extraAddress").value = extraAddr;
+                
+                } else {
+                    document.getElementById("extraAddress").value = '';
+                }
+
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                document.getElementById('postcode').value = data.zonecode;
+                document.getElementById("address").value = addr;
+                // 커서를 상세주소 필드로 이동한다.
+                document.getElementById("detailAddress").focus();
+
+                //주소를 선택했으므로 닫습니다.
+                postcode.close();
+            }
+        });
+        postcode.open();
+    }
+</script>
