@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #micIcon {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3em;
+            z-index: 100;
+        }
+
+        #Text_Content, # Text_View{
+            display: none;
+        }
+
+        #stop, #play{
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+    <div>
+    {% if 'user' in session %}
+    <li><h3 class="display-4" style="color: #3366FF; display: inline;"><span>{{message}}</span></h3><h1 style="display: inline; color: #f03699;"> 님 반갑습니다 !</h1></li>
+    {% endif %}
+    </div>
+    <div>
+        <form action = '/record/start' method="POST">
+            <button id="record">녹음 시작</button>
+            <button id="stop">녹음 중지</button>
+            <buttom id="play">음성 재생</button>
+        </form>
+        <!-- 녹음된 음성파일 다운로드 링크 추가 -->
+        <form action="/record/download" method="POST" id="downloadForm" style="display: none;">
+            <button type="submit">{{user_name}}님의 녹음본 다운로드</button>
+        </form>
+    </div>
+    
+    <div id="Text_View" style = "width: 500px; margin: 0 auto; font-size: 24px;">
+        content
+        <div id ="Text_Content" style="border: 2px solid #000; width: 500px; height: 300px;  margin: 0 auto;">
+        
+        </div>
+    </div>
+
+    <!-- 마이크 아이콘 추가 -->
+    <i id="micIcon">🎙️</i>
+
+    <div>
+        <button onclick="location.href='/'">Home</button>
+    </div>
+</body>
+</html>
+
+<script>
+    var mediaRecorder;
+    var audioChunks = [];
+    var audioBlob;
+    
+    navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
+            mediaRecorder = new MediaRecorder(stream);
+    
+            mediaRecorder.addEventListener("dataavailable", event => {
+                audioChunks.push(event.data);
+            });
+    
+            var record = document.getElementById('record');
+            var stop = document.getElementById('stop');
+            var play = document.getElementById('play');
+
+            var Text_View = document.getElementById('Text_View');
+            var Text_Content = document.getElementById('Text_Content');
+
+    
+            record.addEventListener('click', function(event){
+                event.preventDefault();
+                audioChunks = [];
+                mediaRecorder.start();
+                this.style.display = 'none';
+                stop.style.display = 'inline-block';
+            });
+            
+            stop.addEventListener('click', function(event){
+                event.preventDefault();
+                audioChunks = [];
+                mediaRecorder.stop();
+                this.style.display ='none';
+                record.style.display ='none';
+                play.style.display = 'inline-block';
+
+                audioBlob = new Blob(audioChunks, {type: 'audio/wav'};
+                const formData = new FormData();
+                formData.append("audio", audioBlob);
+
+                fetch('/record/tts', {
+                    
+                })
+            });
+
+
+                    mediaRecorder.stop();
+                    this.innerText = '녹음 시작';
+                    this.style.display = 'none';  // 녹음 버튼을 숨깁니다.
+                    playbackButton.style.display = 'block';  // 재생 버튼을 보여줍니다.
+    
+                    audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                    const formData = new FormData();
+                    formData.append("audio", audioBlob);
+    
+                    fetch('/record/start', {
+                        method: "POST",
+                        body: formData
+                    }).then(response => response.text())
+                      .then(text => {
+                        textView.innerText = text;  // 받은 텍스트를 표시합니다.
+                      });
+                }
+            });
+    
+            playbackButton.addEventListener('click', function(event){
+                event.preventDefault();
+                const audioUrl = URL.createObjectURL(audioBlob);
+                const audio = new Audio(audioUrl);
+                audio.play();
+    
+                this.style.display = 'none';  // 재생 버튼을 숨깁니다.
+                recordButton.style.display = 'block';  // 녹음 버튼을 보여줍니다.
+            });
+        });
+</script>
+
+
+<!--
+<script>
+
+    navigator.mediaDevices.getUserMedia({ audio: true })
+    .then(stream => {
+        const mediaRecorder = new MediaRecorder(stream);
+        var audioChunks = [];
+        let ttsText = "";
+
+        var stop_recording = false; // 녹음 중지 상태 변수
+        document.getElementById('recordButton').addEventListener('click', function(){
+            event.preventDefault(); //브라우저의 기본동작(페이지 동작 등)을 막기
+            if(this.innerText ==='녹음 시작'){
+                this.innerText = '녹음 중지';
+                stop_recording = false; // 녹음 시작
+                mediaRecorder.start(); // 녹음시작
+
+                //녹음 시작 시 마이크 아이콘 보이기
+                micIcon.style.display = 'inline-block';
+            }else if(this.innerText ==='녹음 중지'){
+                this.innerText =' 음성 재생';
+                stop_recording = true; // 녹음 중지
+                mediaRecorder.stop();
+
+                // 녹음 중지 시 마이크 아이콘 숨기기
+                micIcon.style.display = 'none';
+
+                // 녹음이 중지될 때, 'Text View'를 보여지도록 수정
+                var contentDiv = document.createElement('div');
+                contentDiv.style.width = '500px';
+                contentDiv.style.margin = '0 auto';
+                contentDiv.style.fontSize = '24 px';
+                contentDiv.innerHTML = 'content';
+
+                var textView = document.createElement('div');
+                textViewDiv.id = 'Text_View';
+                textViewDiv.style.display = 'block';
+                textViewDiv.style.border = '2px solid #000';
+                textViewDiv.style.width = '500px';
+                textViewDiv.style.height = '300px';
+                textViewDiv.style.margin = '0 auto';
+
+                contentDiv.appendChild(textViewDiv);
+                document.body.appendChild(contentDiv);
+
+            }else{
+                this.innerText = '녹음 시작';
+            // TTS 요청
+            fetch('/record/tts', {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({text: ttsText})
+            });
+        }
+    });
+
+        mediaRecorder.addEventListener("dataavailable", function(event) {
+            audioChunks.push(event.data);
+        });
+
+        mediaRecorder.addEventListener("stop", function() {
+            const audioBlob = new Blob(audioChunks, {
+                type: 'audio/wav'
+            });
+            const formData = new FormData();    
+            formData.append("audio", audioBlob);
+            fetch('/record/start', {
+                method: "POST",
+                body: formData
+            }).then(response => response.text())
+              .then(text => {
+                    ttsText = text;
+
+                    //서버에서 반환한 텍스트를 'Text_View' div 태그에 출력
+                    document.getElementById('Text_View').innerText = ttsText;
+
+                    // 'Text_View' div와 그 부모 div를 화면에 보여주기
+                    var contentView = document.querySelector('#Text_View').parentNode;
+                    contentView.style.display = 'block';
+                    
+                    //녹음이 완료되면 다운로드 링크를 표시
+                    document.getElementById('downloadForm').style.display = 'block';
+              });
+            audioChunks = [];
+        });
+    });
+</script>
+-->

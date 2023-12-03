@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이크 녹음</title>
+<style>
+    #stop, #play, #Text_View, #Text_Content {
+        display: none;
+    }
+</style>
+
+
+<link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+<script defer src="https://pyscript.net/latest/pyscript.js"></script>
+
+</head>
+<body>
+    <div>
+        {% if 'user' in session %}
+        <li><h3 class="display-4" style="color: #3366FF; display: inline;"><span>{{message}}</span></h3><h1 style="display: inline; color: #f03699;"> 님 반갑습니다 !</h1></li>
+        {% endif %}
+        <input type="hidden" name = 'user_Gender' id = 'user_Id' value ={{user_Gender}}>
+    </div>
+    <div>
+        <button id="record">녹음 시작</button>
+        <button id="stop" style="display:none;">녹음 중지</button>
+        <button id="play" style="display:none;">음성 재생</button> 
+    </div>
+    <br><br>
+    <audio controls id="audio">녹음된 소리를 재생할 audio 엘리먼트</audio>
+
+    <div id ="Text_View" style="border: 2px solid #000; width: 500px; height: 300px;  margin: 0 auto; display:none;">
+        <input type="text" id="Text_Content" placeholder = "content">
+    </div>
+
+</body>
+<script>
+
+    // 엘리먼트 취득
+    const $audioEl = document.querySelector("#audio");
+    const $record = document.querySelector("#record");
+    const $stop = document.querySelector('#stop');
+    const $play = document.querySelector('#play');
+
+    const $Text_View = document.querySelector('#Text_View');
+    const $Text_Content = document.querySelector('#Text_Content');
+
+    // 녹음중 상태 변수
+    let isRecording = false;
+
+    // MediaRecorder 변수 생성
+    let mediaRecorder = null;
+
+    // 녹음 데이터 저장 배열
+    const audioArray = [];
+
+    // 녹음 시작 버튼 클릭시
+    $record.onclick = async function (event) {
+        event.preventDefault();
+        if(!isRecording){
+
+            // 마이크 mediaStream 생성: Promise를 반환하므로 async/await 사용
+            const mediaStream = await navigator.mediaDevices.getUserMedia({audio: true});
+
+            // MediaRecorder 생성
+            mediaRecorder = new MediaRecorder(mediaStream);
+
+            
+            // 이벤트핸들러: 녹음 데이터 취득 처리
+            mediaRecorder.ondataavailable = (event)=>{
+                audioArray.push(event.data); // 오디오 데이터가 취득될 때마다 배열에 담아둔다.
+            }
+
+            // 이벤트핸들러: 녹음 종료 처리 & 재생하기
+            mediaRecorder.onstop = (event)=>{
+            
+            let blob; //blob 변수를 전역변수로 선언
+            // 녹음이 종료되면, 배열에 담긴 오디오 데이터(Blob)들을 합친다: 코덱도 설정해준다.
+            blob = new Blob(audioArray, {"type": "audio/ogg codecs=opus"});
+            audioArray.splice(0); // 기존 오디오 데이터들은 모두 비워 초기화한다.            
+            
+
+            var formData = new FormData();
+            formData.append("audio", blob);
+    
+
+            // Blob 데이터에 접근할 수 있는 주소를 생성한다.
+            const blobURL = window.URL.createObjectURL(blob);
+            
+            
+            $.ajax({
+                url: '/record/save',
+                type: 'POST',
+                data: formData,
+                processData: false,  // 이 설정이 필요합니다. jQuery가 data를 query string으로 변환하는 것을 막습니다.
+                contentType: false,  // 이 설정이 필요합니다. 서버로 전송되는 데이터의 형식을 'multipart/form-data'로 유지합니다.
+                success: function(response) {
+                    console.log(response);
+                },
+                error: function(err) {
+                    console.error(err);
+                }
+            });
+            
+            };
+            
+            // 녹음 시작
+            mediaRecorder.start();
+            isRecording = true;
+
+            // audio엘리먼트로 재생한다.
+//            $audioEl.src = blobURL;
+//            $audioEl.play();
+
+            $record.style.display = 'none';
+            $stop.style.display = 'inline-block';
+            $play.style.display = 'none';
+
+            }   
+        }
+
+
+    
+    // 녹음 중지 버튼 클릭시
+    $stop.onclick = function (event){
+        event.preventDefault();
+        
+        // 녹음 종료
+        mediaRecorder.stop();
+        isRecording = false;
+
+
+        // 서버에서 응답으로 받은 WAV 파일의 URL을 이용하여 클라이언트에서 음성을 재생
+//        const audioUrl = await response.text();
+//        $audioEl.src = audioUrl;
+
+        $audioEl.src = blobURL;
+        $audioEl.play();
+
+        $record.style.display = 'none';
+        $stop.style.display = 'none';
+
+
+
+        // 서버에 TTS 요청을 보내고, 반환된 텍스트를 화면에 출력
+        fetch('/record/start', {
+            method: "POST",
+        }).then(response => response.text())
+        .then(text => {
+                // 받은 텍스트를 표시
+                $Text_View.innerText = text;
+                $Text_View.style.display = 'inline-block';
+                $Text_Content.style.display = 'inline-block';
+                $play.style.display = 'inline-block';
+        });
+
+
+    }
+
+    // 음성 재생 버튼 클릭시
+    $play.onclick = function(event) {
+        event.preventDefault();
+
+        var textToSend = $Text_View.innerText; // 전송할 텍스트 변수에 저장
+        
+
+
+
+         
+        //서버에 TTS 요청을 보내고, 반환된 텍스트를 화면에 출력
+        fetch('/record/tts', {
+            method: 'POST',
+//            headers: {
+//                'Content-Type': 'application/json',
+//            },
+//            body: JSON.stringify({ text: "여기에 변환할 텍스트" }),
+            // 클라이언트(HTML)에서 서버로 요청을 보낼경우 header(파일형식), body(내용) 변수로 송신 
+        })
+        .then(response => response.blob()) //바이너리 데이터(음성 파일) 형식으로 결과 수신
+        .then(blob => {
+            // Blob 객체를 이용해 오디오 URL 생성
+            var audioUrl = window.URL.createObjectURL(blob);
+            // 오디오 재생
+            var audio = new Audio(audioUrl);
+            audio.play();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    };
+
+
+//         $audioE1.play();
+
+
+//        fetch('/record/tts', {
+//            method: "POST",
+//            body: new URLSearchParamms({
+//                'text': $Text_Content.inn
+//            })
+//        })
+//    }
+
+    // 음성 재생 버튼 더블클릭시
+    $play.ondblclick = function(event){
+        event.preventDefault();
+        $stop.style.display = 'none';
+        $record.style.display = 'inline-block';
+        $play.style.display = 'none';
+        $Text_View.style.display = 'none';
+        $Text_Content.style.display = 'none';
+    }
+
+
+</script>
+
+</html>

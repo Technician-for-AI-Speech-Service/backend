@@ -6,7 +6,7 @@ import boto3
 import pymysql
 from playsound import playsound
 import pyttsx3   
-import recode
+
 
 
 def select_speech_Id(user_Id , s3_file_path):
@@ -25,15 +25,20 @@ def select_speech_Id(user_Id , s3_file_path):
 
 
     # 예시: SQL 쿼리 실행 (테이블 이름을 원하는 테이블로 변경해야 합니다.)
-    cursor.execute(sql, (user_Id,s3_file_path))
-    result = cursor.fetchall()        
-    conn.commit()
-    conn.close()
-    result = result[0][0]
+    try:
 
-    return result
+        cursor.execute(sql, (user_Id,s3_file_path))
+        result = cursor.fetchall()        
+        conn.commit()
+        conn.close()
+        result = result[0][0]
 
-def record_and_save_wav(file_path, duration=10, sample_rate=44100):
+        return result
+    except:
+        print("select error")
+        return 1
+
+def record_and_save_wav(file_path, duration=60, sample_rate=44100):
     # 녹음 설정
     recording = sd.rec(int(sample_rate * duration),
                        samplerate=sample_rate, channels=2, dtype='int16')
@@ -82,18 +87,6 @@ def S3_input_data(formatted_now):
         s3.close()
         return print("S3_error")
 
-
-
-    # 예시: SQL 쿼리 실행 (테이블 이름을 원하는 테이블로 변경해야 합니다.)
-    cur.execute(sql, (user_Name, user_Id, user_Phone, user_Pwd, user_Gender, 
-                         user_Disability, user_Year, user_Region,
-                         user_Phone1,user_Phone2,user_Phone3,user_Date,
-                         user_PostNumber,user_Address,user_Details))
-
-    cur.commit()
-    cur.close()
-    return user_Id 
-
 def Speech_input(user_Id,s3_file_path):
     # MySQL 연결 설정
     conn = pymysql.connect(
@@ -106,14 +99,18 @@ def Speech_input(user_Id,s3_file_path):
     )
     cursor = conn.cursor()
 
-    # 데이터베이스에 삽입
-    sql = """INSERT INTO t_Speech (user_Id, speak_Content) VALUES (%s, %s)"""
-    cursor.execute(sql, (user_Id, s3_file_path))
-        
-    # 변경사항 커밋
-    conn.commit()
-    print("PCM 데이터가 MySQL에 성공적으로 저장되었습니다.")
-    conn.close()
+    try:
+        # 데이터베이스에 삽입
+        sql = """INSERT INTO t_Speech (user_Id, speak_Content) VALUES (%s, %s)"""
+        cursor.execute(sql, (user_Id, s3_file_path))
+            
+        # 변경사항 커밋
+        conn.commit()
+        print("PCM 데이터가 MySQL에 성공적으로 저장되었습니다.")
+        conn.close()
+    except:
+        print("error")
+        conn.close()
 
 def input_STT_TTS(user_id, speak_id, Output_text):
 
@@ -128,14 +125,24 @@ def input_STT_TTS(user_id, speak_id, Output_text):
     cursor = conn.cursor()
 
 
-
-    sql = """INSERT INTO t_TTS (user_Id, speak_Id, text_Content) VALUES (%s,%s,%s)"""
-
-
-    # 예시: SQL 쿼리 실행 (테이블 이름을 원하는 테이블로 변경해야 합니다.)
-    cursor.execute(sql, (user_id,speak_id, Output_text))
+    try:
+        sql = """INSERT INTO t_TTS (user_Id, speak_Id, text_Content) VALUES (%s,%s,%s)"""
+        # 예시: SQL 쿼리 실행 (테이블 이름을 원하는 테이블로 변경해야 합니다.)
+        cursor.execute(sql, (user_id,speak_id, Output_text))
+        # 변경사항 커밋
+        conn.commit()
+        conn.close()
+        print("Stt 삽입끝")
+    except:
+        print("STT에러")
+        conn.close()
 
 def text_to_speech(text):
+    # voice_dict = {'남': 0, '여': 1}
+    # code = voice_dict[gender]
     engine = pyttsx3.init()
+    # voices = engine.getProperty('voices')
+    # engine.setProperty('voice', voices[code].id)
     engine.say(text)
     engine.runAndWait()
+    

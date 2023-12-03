@@ -143,34 +143,49 @@
                 font-weight: bolder;
                 font-size: 3vi;
             }
+
             .main-header {
                 padding : 0px;
                 margin : 0px;
+            }           
+        
+            #Text_View {
+                font-size: 40px; /* 글꼴 크기 조정 */
+                background-color: #f2f2f2; 
+                border: 2px solid #d1d1d1;
+                padding: 10px; /* 패딩 조정 */
+                line-height: 1.2; /* 줄 간격 조정 */
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                width: 80%;
+                margin-top: 20px; /* 상단 마진 줄임 */
+                margin-left: auto;
+                margin-right: auto;
+                text-align: center;
+                height: auto; /* 높이를 자동으로 설정 */
+                position: relative; /* 위치를 상대적으로 설정 */
+                top: -70px; /* 상단으로 30픽셀 이동 */
+            }
+
+            #recording-animation {
+                width: 80%;
+                height: auto;        /* 높이를 자동으로 설정하여 비율을 유지 */
+                position: absolute;  /* 절대 위치 지정 */
+                left: 60px;             /* 왼쪽 아래로 정렬 */
+                bottom: 85px;           /* 왼쪽 아래로 정렬 */
             }
             
-            #recording-content {
-                font-size: 50px; /* 원하는 글자 크기로 설정 */
-                background-color: #f2f2f2; /* 박스의 배경색 */
-                border: 2px solid #d1d1d1; /* 박스의 테두리 */
-                padding: 10px; /* 내부 여백 */
-                padding-top: 20px; /* 내부 상단 여백 추가 */
-                border-radius: 10px; /* 모서리 굴곡 */
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
-                width: 80%; /* 박스의 너비 */
-                margin-top: 100px; /* 상단 여백 */
-                margin-left: auto; /* 가운데 정렬을 위한 설정 */
-                margin-right: auto; /* 가운데 정렬을 위한 설정 */
-                text-align: center; /* 텍스트 중앙 정렬 */
-            }
-         
+        /* 화면의 너비가 800px 이하이고 높이가 480px 이하일 때 적용되는 스타일 */
+        @media (max-width: 800px) and (max-height: 480px) {
             #recording-animation {
-                width: 30%; /* 너비 설정 */
-                height: auto; /* 높이를 자동으로 조정하여 비율 유지 */
-                position: absolute;
-                top: 520px; /* 상단에서 50픽셀 아래로 */
-                left: 250px; /* 왼쪽에서 50픽셀 오른쪽으로 */
-                
-            }
+                width: 30%; /* GIF의 너비를 화면에 맞춰 조정 */
+                /* left와 bottom의 값을 퍼센티지나 vw/vh 단위로 조정하여 반응형으로 만듭니다 */
+                left: 50%; /* 화면의 가로 중앙에 위치하도록 설정 */
+                bottom: 50%; /* 화면의 세로 중앙에 위치하도록 설정 */
+                transform: translate(-50%, 50%); /* 요소의 중앙을 정확한 위치로 조정 */
+    }
+}
+
 
     </style>
 </head>
@@ -198,17 +213,17 @@
                             <!-- Logo -->
                             <div class="col-xl-2 col-lg-2">
                                 <div class="logo" >
-                                    <a href="/" ><img src={{url_for('static', filename="/assets/img/logo_bg2.png")}} alt="" style="width:200px; height:100px; margin-top:5%;"></a>
+                                    <a href="/" ><img src={{url_for('static', filename="/assets/img/logo_bg2.png")}} alt="" style="width:200px; height:80px; margin-top:1%;"></a>
                                 </div>
                             </div>
                             <div class="col-xl-10 col-lg-10">
-                                <div class="menu-wrapper d-flex align-items-center justify-content-end" style="margin-top:50px;">
+                                <div class="menu-wrapper d-flex align-items-center justify-content-end" style="margin-top:1px;">
                                     <!-- Main-menu -->
                                     <div class="main-menu d-none d-lg-block">
                                         <nav>
                                             <ul id="navigation">
                                                 {% if 'user' in session %}
-                                                    <li><h3 class="display-4" style="color: #3366FF; display: inline;"><span>{{message}}</span></h3><h1 style="display: inline; color: #f03699;"> 님 반갑습니다 !</h1></li>
+                                                    <li><h3 class="display-4" style="color: #3366FF; display: inline;"><span>{{user_Name}}</span></h3><h1 style="display: inline; color: #f03699;"> 님 반갑습니다 !</h1></li>
                                                 {% endif %}
 
                                                 <!--
@@ -222,8 +237,9 @@
                                                         <li><a href="elements.html">Element</a></li>
                                                     </ul>
                                                 </li>
+                                                
+                                                <li><a href="/render">Contact</a></li>
                                                 -->
-                                                <li><a href="/">Contact</a></li>
                                                 
                                                 <!-- Button -->
                                                 {% if 'user' in session %}
@@ -272,7 +288,7 @@
                                     <h1 data-animation="fadeInLeft" data-delay=".6s ">AI - SPEAKER</h1>
                                     <p data-animation="fadeInLeft" data-delay=".8s">
                                         구음장애 환자를 위한 음성변환 서비스
-                                    </p>
+                                    </p>시작
                                     <!-- Slider btn -->
                                     <div class="slider-btns">
                                         <!-- Hero-btn -->
@@ -285,27 +301,33 @@
     
                             <div id="center-container" class="col-xl-6 col-lg-6">
 <!--
-                                <div id="center-circle" class="hero__img d-none d-lg-block f-right">
+                                <div id="center-circle" class="hero__img d-none d-lg-block f-right" onclick = "toggleStartStop()">
                                     <span id="circle-text" alt="" data-animation="fadeInRight" data-delay="1s">
                                         녹음 시작
                                     </span>
                                 </div>
 -->
-                                <div id="center-circle" class="hero__img d-none d-lg-block f-right">
+                                <div id="center-circle" class="hero__img d-none d-lg-block f-right" onclick = "toggleStartStop()">
+                                    <input type="checkbox" id="chk-hear-mic" style="display:none;"><label for="chk-hear-mic" style="display:none;">마이크 소리 듣기</label>
                                     <span id="circle-text" alt="" data-animation="fadeInRight" data-delay="1s">
                                         녹음 시작
                                     </span>
                                     <!-- GIF 이미지 추가 -->
-                                    <img id="recording-animation" src="/static/assets/img/rec.gif" alt="녹음중" style="display: none;">
+                                    <img id="recording-animation" src="/static/assets/img/rec4.gif" alt="녹음중" style="display: none;">
+                                    <div id="sound-clips"></div>
                                 </div>
                             </div>
 
-                            <!-- 녹음 내용을 표시할 공간 -->
-                            <div id="recording-content" style="display: none;">글자</div>
-                            <div id="center-circle2" >클릭해 보세요</div>
+
     
                         </div>
-                    </div>
+                            <!-- 녹음 내용을 표시할 공간 -->
+                            <div id="Text_View" style="display: none;"></div>
+                            <input type ="hidden" name= "speech" id="Text_Content" placeholder = "content"/>
+                            <input type ="hidden" name= "voices" id="user_Gender" value = {{user_Gender}}>
+                            <div id="center-circle2">클릭해 보세요</div>
+                        </div>
+
 
 
 
@@ -417,7 +439,7 @@
                                 <i class="fas fa-globe"></i>
                             </div>
                         </div>
-                    </form>	
+                    </form>   
                     
                     <div class="single-domain pt-30 pb-30">
                         <ul>
@@ -942,76 +964,87 @@
 <script src={{url_for('static', filename="/assets/js/mail-script.js")}}></script>
 <script src={{url_for('static', filename="/assets/js/jquery.ajaxchimp.min.js")}}></script>
 
-<!-- Jquery Plugins, main Jquery -->	
+<!-- Jquery Plugins, main Jquery -->   
 <script src={{url_for('static', filename="/assets/js/plugins.js")}}></script>
 <script src={{url_for('static', filename="/assets/js/main.js")}}></script>
 
 </body>
 </html>
-
 <script>
-    // document.getElementById('center-circle').addEventListener('click', function(){
-    //     var circleText = document.getElementById('circle-text');
-    //     var recordingContent = document.getElementById('recording-content');
-
-    //     if(circleText.textContent === '녹음 시작'){
-    //         circleText.textContent = '녹음 종료';
-    //         recordingContent.style.display = 'none'; // 녹음 시작 시 텍스트 숨김
-    //     } else{
-    //         circleText.textContent = '녹음 시작';
-    //         recordingContent.textContent = '여기에 녹음 내용을 표시합니다.'; // 녹음 종료 시 텍스트 추가 및 표시
-    //         recordingContent.style.display = 'block';
-    //     }
-    // })
-    document.addEventListener('DOMContentLoaded', function () {
-        var centerText = document.getElementById('circle-text');
-        var recordButton = document.getElementById("circle-circle"); // HTML에 recordButton이 있다고 가정합니다.
-
-
-        centerText.addEventListener('click', function () {
-            centerText.innerText = '녹음 중지';
-
-            fetch('/record', {
-                method: 'POST'
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    statusElement.innerText = '녹음 완료. ' + data.message;
-                } else {
-                    statusElement.innerText = '오류: ' + data.message;
-                }
-            })
-            .catch(error => {
-                console.error('오류:', error);
-                statusElement.innerText = '녹음 중 오류 발생.';
-            });
-        });
-
-        // recordButton 클릭 이벤트에 필요한 경우 추가 기능을 추가합니다.
-        recordButton.addEventListener('click', function () {
-            // recordButton이 클릭되면 실행되는 코드입니다.
-        });
-    });
-   
-    document.getElementById('center-circle').addEventListener('click', function() {
-    var circleText = document.getElementById('circle-text');
-    var recordingContent = document.getElementById('recording-content');
-    var centerCircle2 = document.getElementById('center-circle2');
-    var recordingAnimation = document.getElementById('recording-animation'); // 추가된 녹음중 GIF
-
-    if(circleText.textContent === '녹음 시작') {
-        circleText.textContent = '녹음 종료';
-        recordingContent.style.display = 'none';
-        centerCircle2.style.display = 'none';
-        recordingAnimation.style.display = 'block'; // 녹음 시작 시 GIF 표시
-    } else {
+    // 페이지 로드 시 초기 상태 설정
+    window.onload = function() {
+        var circleText = document.getElementById('circle-text');
+        var recordingAnimation = document.getElementById('recording-animation');
+        // "녹음 시작" 상태에서 시작하기 위해 텍스트 설정
         circleText.textContent = '녹음 시작';
-        recordingContent.textContent = '여기에 녹음 내용을 표시합니다.';
-        recordingContent.style.display = 'block';
-        centerCircle2.style.display = 'none';
-        recordingAnimation.style.display = 'none'; // 녹음 종료 시 GIF 숨김
-    }
-});
+        // GIF를 숨김
+        recordingAnimation.style.display = 'none';
+    };
+</script>
 
+<script type="text/javascript">
+    var recognizing;
+    var recognition = new webkitSpeechRecognition();
+    recognition.lang = "ko-KR";
+    recognition.continuous = true;
+    reset();
+    recognition.onend = reset;
+  
+    recognition.onresult = function (event) {
+      var Text_View = document.getElementById('Text_View');
+      for (var i = event.resultIndex; i < event.results.length; ++i) {
+        if (event.results[i].isFinal) {
+          document.getElementById('Text_Content').value += event.results[i][0].transcript;
+          Text_View.innerHTML += event.results[i][0].transcript + ' '; // 이어서 계속 말하기
+        }
+      }
+    }
+  
+    function reset() {
+      recognizing = false;
+    }
+  
+    function toggleStartStop() {
+        var circleText = document.getElementById('circle-text');
+        var Text_View = document.getElementById('Text_View');
+        var Text_Content = document.getElementById('Text_Content');
+        var recordingAnimation = document.getElementById('recording-animation');
+    
+        if (recognizing) {
+          recognition.stop();
+          reset();
+          circleText.innerHTML = '음성 재생';
+          Text_View.style.display = 'block';
+          recordingAnimation.style.display = 'none';
+    
+        } else if (circleText.innerHTML == '음성 재생') {
+          circleText.innerHTML = '녹음 시작';
+          Text_View.innerHTML = '';
+          Text_Content.innerHTML = '';
+          
+          Text_View.style.display = 'none';
+          recordingAnimation.style.display = 'none';
+    
+          fetch('/record/tts', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+              body: JSON.stringify({text: Text_Content.value})
+          })
+          .then(Response => Response.json())
+          .then(data => {
+              console.log(Text_Content.value);
+          })
+          .catch(error =>{
+              console.error('Error:', error);
+          })
+        } else {
+          recognition.start();
+          recognizing = true;
+          circleText.innerHTML = '녹음 중지';
+          Text_View.style.display = 'block';
+          recordingAnimation.style.display = 'block'; // GIF 표시
+        }
+      }
 </script>

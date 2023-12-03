@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이크 테스트</title>
+<style>
+    #stop, #play {
+        display: none;
+    }
+</style>
+<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+</head>
+
+<body>
+    <div>
+        {% if 'user' in session %}
+        <li><h3 class="display-4" style="color: #3366FF; display: inline;"><span>{{user_Name}}</span></h3><h1 style="display: inline; color: #f03699;"> 님 반갑습니다 !</h1></li>
+        {% endif %}
+    </div>
+    <input type=checkbox id="chk-hear-mic"><label for="chk-hear-mic">마이크 소리 듣기</label>
+    <button id="record">녹음 시작</button>
+    <button id="stop">녹음 중지</button>
+    <button id="play">음성 재생</button>
+    <div id="sound-clips"></div>
+
+    <div id ="Text_View" style="border: 2px solid #000; width: 500px; height: 300px;  margin: 0 auto; display:none;">
+            <input type ="hidden" name= "voices" id="user_Gender" value = {{user_Gender}}>
+            <input type ="hidden" name= "speech" id="Text_Content" placeholder = "content"/>
+    </div>
+
+</body>
+    <script>
+        const record = document.getElementById("record");
+        const stop = document.getElementById("stop");
+        var play = document.getElementById("play");
+        const soundClips = document.getElementById("sound-clips");
+        const chkHearMic = document.getElementById("chk-hear-mic");
+        const $Text_View = document.querySelector('#Text_View');
+        const $Text_Content = document.querySelector('#Text_Content');
+        const $Gender = document.querySelector('#user_Gender');
+
+        const audioCtx = new(window.AudioContext || window.webkitAudioContext)() // 오디오 컨텍스트 정의
+
+        const analyser = audioCtx.createAnalyser()
+        //        const distortion = audioCtx.createWaveShaper()
+        //        const gainNode = audioCtx.createGain()
+        //        const biquadFilter = audioCtx.createBiquadFilter()
+
+        function makeSound(stream) {
+            const source = audioCtx.createMediaStreamSource(stream)
+
+            source.connect(analyser)
+            //            analyser.connect(distortion)
+            //            distortion.connect(biquadFilter)
+            //            biquadFilter.connect(gainNode)
+            //            gainNode.connect(audioCtx.destination) // connecting the different audio graph nodes together
+            analyser.connect(audioCtx.destination)
+
+        }
+
+        if (navigator.mediaDevices) {
+            console.log('getUserMedia supported.')
+
+            const constraints = {
+                audio: true
+            }
+            let chunks = []
+
+            navigator.mediaDevices.getUserMedia(constraints)
+                .then(stream => {
+
+                    const mediaRecorder = new MediaRecorder(stream)
+                    
+                    chkHearMic.onchange = e => {
+                        if(e.target.checked == true) {
+                            audioCtx.resume()
+                            makeSound(stream)
+                        } else {
+                            audioCtx.suspend()
+                        }
+                    }
+                    
+                    record.onclick = () => {
+                        mediaRecorder.start()
+                        console.log(mediaRecorder.state)
+                        console.log("recorder started")
+                        record.style.background = "red"
+                        record.style.color = "black"
+                        stop.style.display = "inline-block";
+                        record.style.display = "none";
+                    }
+
+                    stop.onclick = () => {
+                        mediaRecorder.stop()
+                        console.log(mediaRecorder.state)
+                        console.log("recorder stopped")
+                        record.style.background = ""
+                        record.style.color = ""
+                        play.style.display ="inline-block";
+
+                        stop.style.display = "none";
+                    }
+
+                    mediaRecorder.onstop = e => {
+                        console.log("data available after MediaRecorder.stop() called.")
+
+                        const clipName = prompt("오디오 파일 제목을 입력하세요.", new Date())
+
+                        const clipContainer = document.createElement('article')
+                        const clipLabel = document.createElement('p')
+                        const audio = document.createElement('audio')
+                        const deleteButton = document.createElement('button')
+
+                        clipContainer.classList.add('clip')
+                        audio.setAttribute('controls', '')
+                        deleteButton.innerHTML = "삭제"
+                        clipLabel.innerHTML = clipName
+
+                        clipContainer.appendChild(audio)
+//                        clipContainer.appendChild(clipLabel)
+//                        clipContainer.appendChild(deleteButton)
+                        soundClips.appendChild(clipContainer)
+
+                        audio.controls = true
+                        const blob = new Blob(chunks, {
+                            'type': 'audio/ogg codecs=opus'
+                        })
+                        chunks = []
+                        const audioURL = URL.createObjectURL(blob) // Blob 데이터에 접근할 수 있는 주소를 생성한다.
+                        audio.src = audioURL
+
+                        play.onclick = (event) => {
+                            record.style.display = "inline-block";
+                            play.style.display = "none";
+                            audio.remove();
+                        }
+
+                        
+
+                        //더블클릭으로 인한 기능 실행
+                        play.ondblclick = (event) => {
+                            record.style.display = "inline-block";
+                            play.style.display = "none";
+                            deleteButton.remove();
+                            audio.remove();
+                        }
+
+                        // 서버로 전송
+                        const formData = new FormData();
+                        formData.append('audio', blob, clipName + '.ogg');
+                        fetch('/record/save', {
+                            method: 'POST',
+                            body: formData
+                        }).then(response => response.text())
+                        .then(data => console.log(data))
+                        .catch(error => console.error('Error:', error));
+
+                        console.log("recorder stopped")
+
+                        // 서버에 TTS 요청을 보내고, 반환된 텍스트를 화면에 출력
+                        fetch('/record/start', {
+                            method: "POST",
+                        }).then(response => response.text())
+                        .then(text => {
+                                // 받은 텍스트를 표시
+                                $Text_View.innerText = text;
+                                $Text_Content.value = text;
+                                $Text_View.style.display = 'inline-block';
+                                $Text_Content.style.display = 'inline-block';
+                                play.style.display = 'inline-block';
+                        });
+
+                        
+//                        deleteButton.onclick = e => {
+//                            evtTgt = e.target
+//                            evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode)
+//                        }
+                    }
+
+
+                    mediaRecorder.ondataavailable = e => {
+                        chunks.push(e.data)
+                    }
+                })
+                .catch(err => {
+                    console.log('The following error occurred: ' + err)
+                })
+        }
+
+        $("#play").on("click", function(){
+//            audio.play();
+            console.log($Text_Content.value);
+            console.log($Gender.value);
+
+            fetch('/record/tts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text: $Text_Content.value})
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log($Text_Content.value);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+            $Text_View.remove();
+            $Text_Content.remove();
+        });
+
+
+//            $.ajax({
+//                url : "/record/tts",
+//                type : "POST",
+//                data : {text : $Text_Content.value},
+//                success:function(result){
+//                    console.log(result);
+//                }, error : function(e){
+//                    console.log(e);
+//                }
+//            });
+//        });
+        //play.onclick = () => {         
+           
+
+          //  fetch('/record/tts', {
+           //     method: 'POST',
+           //     headers: {
+           //         'Content-Type': 'application/json',
+            //    },
+            //    body: JSON.stringify({ text: $Text_Content })
+            //    // 클라이언트(HTML)에서 서버로 요청을 보낼경우 header(파일형식), body(내용) 변수로 송신 
+           // })
+            
+        //}
+
+
+
+
+
+
+
+
+
+    </script>
+</html>

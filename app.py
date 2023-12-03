@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, Blueprint, redirect, request, render_template, send_from_directory, session, url_for, flash
+from flask import Flask, jsonify, Blueprint, redirect, request, render_template, send_from_directory, session, url_for, flash, send_file
 from flask_mysqldb import MySQL
 import pymysql
 import pandas as pd
@@ -9,14 +9,18 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_paginate import Pagination, get_page_parameter
 import secrets
 import os
-import wave
-import sounddevice as sd
+# import wave
+# import sounddevice as sd
 from datetime import datetime
-import boto3
-import pymysql
-from playsound import playsound
-import pyttsx3   
-import recode
+# import boto3
+# from playsound import playsound
+import pyttsx3
+# import recode
+from flask_cors import cross_origin
+# import voiceAPI
+# from pydub import AudioSegment
+# import evaluate
+
 
 
 app = Flask(__name__, static_url_path='/static')
@@ -34,13 +38,23 @@ app.config['MYSQL_DB'] = 'Insa4_IOTB_final_3'
 
 mysql = MySQL(app)
 
+@app.route('/test')
+def test():
+    # if 'user' in session:
+    #     user = session['user']
+    #     user_Name = user['user_Name']
+    #     user_Gender = user['user_Gender']
+        # return render_template('/record3.html', user_Name = user_Name, user_Gender=user_Gender)
+    # else:
+        return render_template('/record3.html')
 
 @app.route('/')
 def main():
     if 'user' in session:
         user = session['user']
         user_Name = user['user_Name']
-        return render_template('/main/index.html', message = user_Name)
+        user_Gender = user['user_Gender']
+        return render_template('/main/index.html', user_Name = user_Name, user_Gender = user_Gender)
     else:
         return render_template("/main/index.html")
 
@@ -70,7 +84,7 @@ def login():
     user_Pwd = request.form.get('user_Pwd')
     
     cur = mysql.connection.cursor()
-    query = "SELECT * FROM t_User where user_Id = %s and user_Pwd = %s"
+    query = "SELECT * FROM t_User where user_Id = %s and user_Pwd = SHA(%s)"
     cur.execute(query, (user_Id, user_Pwd))
     result = cur.fetchone()
    
@@ -221,7 +235,7 @@ def logout():
     return redirect('/')
         
 
-@app.route('/mypage/update', methods=["POST"])
+@app.route('/user/update', methods=["POST"])
 def update():
     user=session.get('user')
     if user:
@@ -284,7 +298,8 @@ def update():
 
             flash('로그인 완료', category = 'success')
         
-        return redirect(url_for('main', user_Name = user_Name, user_Phone = user_Phone))
+        return redirect(url_for('main', user_Name = user_Name))
+
 
 @app.route('/user/leave')
 def leave():
@@ -302,32 +317,212 @@ def leave():
         return redirect(url_for('main'))
     else:
         return redirect(url_for('main'))
+
+
+
+# Output_text = "" # 전역 변수 선언
+# import urllib3
+# import json
+# import base64
+# import speech_recognition as sr
+
+# # 연습용 레코드
+# @app.route('/record/start', methods = ['POST'])
+# def start():
+#     user = session.get('user')
+#     if user:
+#         user_Id = user.get('user_Id')
+        
+        
+        # r = sr.Recognizer()
+        # with sr.Microphone() as source:
+        #     audio = r.listen(source)
+        
+        # try:
+        #     speech_text = r.recognize_google(audio, language='ko')
+        #     return speech_text
+        # except sr.UnknownValueError:
+        #     print("Speech Recognition could not understand audio")
+        # except sr.RequestError as e:
+        #     print("Could not request results from Google Speech Recognition service; {0}".format(e))
+            
+        # openApiURL = "http://aiopen.etri.re.kr:8000/WiseASR/Recognition"
+        # accessKey = "57536e54-f9a7-4f44-9a3a-998b3692fba2"
+        # file_path = "./instance/hello.wav"
+        # languageCode = "korean"
+
+        # file = open(file_path, "rb")
+        # audioContents = base64.b64encode(file.read()).decode("utf8")
+        # file.close()
+
+        # requestJson = {    
+        # "argument": {
+        #     "language_code": languageCode,
+        #     "audio": audioContents
+        # }
+        # }
+
+        # # REST API
+        # http = urllib3.PoolManager()
+        # response = http.request(
+        # "POST",
+        # openApiURL,
+        # headers={"Content-Type": "application/json; charset=UTF-8","Authorization": accessKey},
+        # body=json.dumps(requestJson)
+        # )
+
+        # print("[responseCode] " + str(response.status))
+        # print("[responBody]")
+        # # print(str(response.data,"utf-8"))
+        # data = json.loads(response.data.decode("utf-8", errors='ignore'))    
+        # Output_text = data['return_object']['recognized']
+        
+        
+    ## docker 모델적용해서 Output_text
+    # output_pcm_file = './instance/output.pcm'
+    # predict = evaluate.mains(output_pcm_file)
     
-@app.route('/record', methods=['POST'])
-def record():
-    user = session.get('user')
-    if user: # 로그인 상태
-        user_Id = user.get('user_Id')
-        file_path = './instance/recorded_audio.wav'
-        recode.record_and_save_wav(file_path)
-        output_pcm_file = './instance/output.pcm'
-        recode.wav_to_pcm(file_path, output_pcm_file)
-        now = datetime.now()
-        formatted_now = now.strftime("%Y_%m_%d_%H_%M_%S")
-        print(formatted_now)
-        # PCM 파일 변환이후에 S3_input 으로 data 올림
-        s3_file_path = recode.S3_input_data(formatted_now)
-        recode.Speech_input(user_Id , s3_file_path)
+    # Output_text = "해당 문구를 TTS로 호출하시오."
+    
+    # return Output_text # 변환된 텍스트를 반환
+    # return predict[0]
 
-        # S3 에서 DATA 받아오는거 DB에서 저장된거 Select 해올것! 
-        speak_id = recode.select_speech_Id(user_Id , s3_file_path) 
-        Output_text = "안녕하세요?"
-        recode.text_to_speech(Output_text)
-        recode.input_STT_TTS(user_Id, speak_id, Output_text)
-        return jsonify({'status': 'success', 'message': '오디오가 성공적으로 녹음되었습니다'})
 
+@app.route('/record/save', methods = ['POST'])
+def save():
+    try:
+        if request.method == 'POST':
+            user = session.get('user')
+            user_Id = user['user_Id']
+            
+            # 클라이언트로부터 전송된 오디오 데이터를 받음
+            # file_path = './instance/recorded_audio.wav' # 녹음본 파일경로
+            # audio_data = request.files['audio']
+            # audio_data.save(file_path)
+            # WAV 파일로 저장
+            # with open(file_path, 'wb') as f:
+                # f.write(audio_data)
+                
+            # recode.record_and_save_wav(file_path)
+            # output_pcm_file = './instance/output.pcm' # 모델에 사용가능한 음성파일 (.pcm) 경로
+            # recode.wav_to_pcm(file_path, output_pcm_file) # 음성 녹음본 -> 모델에 사용가능한 음성파일
+            now = datetime.now()
+            formatted_now = now.strftime("%Y_%m_%d_%H_%M_%S")
+            print(formatted_now)
+
+            # # PCM 파일 변환이후에 S3_input 으로 data 올림
+            # s3_file_path = recode.S3_input_data(formatted_now) # S3 저장소에 데이터(pcm 파일) 저장
+            # recode.Speech_input(user_Id , s3_file_path) # 저장된 파일경로가 DB (MySQL)에 저장
+            # # S3 에서 DATA 받아오는거 DB에서 저장된거 Select 해올것! 
+            # speak_id = recode.select_speech_Id(user_Id , s3_file_path)
+            
+            return jsonify({'status': 'success', 'message': '오디오 녹음이 성공적으로 완료되었습니다.'})
+        else:
+            return jsonify({'status': 'error', 'message': '올바른 HTTP 메소드가 아닙니다.'})
+
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': f'오류: {str(e)}'})
+
+# @app.route('/record/play')
+# def play():
+#     # 저장된 녹음 파일을 읽어서 응답으로 전송
+#     with open(file_path, 'rb') as f:
+#         audio_data = f.read()
+    
+#     return audio_data
+
+def text_to_speech(text):
+    # voice_dict = {'남': 0, '여': 1}
+    # code = voice_dict[gender]
+    engine = pyttsx3.init()
+    # voices = engine.getProperty('voices')
+    # engine.setProperty('voice', voices[code].id)
+    engine.say(text)
+    engine.runAndWait()
+
+@app.route('/record/tts', methods = ['POST'])
+@cross_origin()
+def TTS():
+    try:
+        if request.method == 'POST':
+            data = request.get_json()  # JSON 데이터를 파싱
+            text = data['text']  # 'text' 키로 데이터에 접근
+            # gender = data['gender']
+            text_to_speech(text)
+            # text = request.form['speech']
+            # gender = request.form['voices']
+            # text_to_speech(text, gender)
+
+            #text = start()
+            #tts = recode.text_to_speech(text)
+            #recode.text_to_speech(Output_text) # start() 함수에서 반환된 값을 매개변수로 사용
+            #return render_template('record3.html')
+            # text_to_speech("안녕하세요")
+            return jsonify({'status': 'success', 'message': '오디오 녹음이 성공적으로 완료되었습니다.'})
+        else:
+            return jsonify({'status': 'error', 'message': '올바른 HTTP 메소드가 아닙니다.'})
+    
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': f'오류: {str(e)}'})
+            
+
+    
+
+# @app.route('/record', methods=['POST'])
+# def record():
+#     user = session.get('user')
+#     if user: # 로그인 상태
+#         user_Id = user.get('user_Id')
+#         file_path = './instance/recorded_audio.wav' # 녹음본 파일경로
+#         recode.record_and_save_wav(file_path) # 녹음 후 음성파일(.wav) 저장
+#         output_pcm_file = './instance/output.pcm' # 모델에 사용가능한 음성파일 (.pcm) 경로
+#         recode.wav_to_pcm(file_path, output_pcm_file) # 음성 녹음본 -> 모델에 사용가능한 음성파일
+#         now = datetime.now()
+#         formatted_now = now.strftime("%Y_%m_%d_%H_%M_%S")
+#         print(formatted_now)
+#         # PCM 파일 변환이후에 S3_input 으로 data 올림
+#         s3_file_path = recode.S3_input_data(formatted_now) # S3 저장소에 데이터(pcm 파일) 저장
+#         recode.Speech_input(user_Id , s3_file_path) # 저장된 파일경로가 DB (MySQL)에 저장
+
+#         # S3 에서 DATA 받아오는거 DB에서 저장된거 Select 해올것! 
+#         speak_id = recode.select_speech_Id(user_Id , s3_file_path) 
+        
+#         Output_text = "안녕하세요?" # pcm파일을 모델로 적용한 Text
+#         recode.text_to_speech(Output_text) # python 전용 TTS
+#         recode.input_STT_TTS(user_Id, speak_id, Output_text) # STT/TTS 를 DB에 저장
+#         return jsonify({'status': 'success', 'message': '오디오가 성공적으로 녹음되었습니다'})
+
+
+# import speech_recognition as sr
+
+# def get_audio():
+#     r = sr.Recognizer()
+
+#     with sr.Microphone() as source:
+#         audio = r.listen(source)
+#         transcript = " "
+
+    
+#     try:
+#         transcript = r.recognize_google(audio, language="ko-KR")
+#         print("Speech Recognition thinks you said: ", transcript)
+#     except sr.UnknownValueError:
+#         print(" Speech Recognition colud not understand audio")
+#     except sr.RequestError as e:
+#         print("Could not request results from Google Speech Recognition service; {0}".format(e))
+        
+#     return render_template('test.html', transcript=transcript)
+    
+# @app.route('/render')
+# def rendering():
+#     return render_template('/user/speech.html')
+
+# @app.route('/upload', methods=['POST'])
+# def upload():
+#     audio_file = request.files['audio']
+#     audio_file.save(os.path.join('./instance', 'recorded_audio.wav'))
+#     return '', 204 # No content
 
 # 실행
 if __name__ == '__main__':
-    # app.run(debug=False, host="0.0.0.0")
     app.run(debug=True, host="0.0.0.0")
